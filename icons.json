@@ -1,0 +1,434 @@
+[
+  {
+    "name": "icon-down-10",
+    "nodeId": "474:1013",
+    "size": 10,
+    "group": "Arrow"
+  },
+  {
+    "name": "icon-up-10",
+    "nodeId": "735:18365",
+    "size": 10,
+    "group": "Arrow"
+  },
+  {
+    "name": "icon-dismiss-10",
+    "nodeId": "735:12446",
+    "size": 10,
+    "group": "Dismiss"
+  },
+  {
+    "name": "icon-down-12",
+    "nodeId": "474:1049",
+    "size": 12,
+    "group": "Arrow"
+  },
+  {
+    "name": "icon-up-12",
+    "nodeId": "735:18369",
+    "size": 12,
+    "group": "Arrow"
+  },
+  {
+    "name": "icon-dismiss-12",
+    "nodeId": "735:12442",
+    "size": 12,
+    "group": "Dismiss"
+  },
+  {
+    "name": "icon-information-16",
+    "nodeId": "192:33997",
+    "size": 16,
+    "group": "Info"
+  },
+  {
+    "name": "icon-up-16",
+    "nodeId": "192:34095",
+    "size": 16,
+    "group": "Arrow"
+  },
+  {
+    "name": "icon-down-16",
+    "nodeId": "192:34107",
+    "size": 16,
+    "group": "Arrow"
+  },
+  {
+    "name": "icon-right-16",
+    "nodeId": "752:12298",
+    "size": 16,
+    "group": "Arrow"
+  },
+  {
+    "name": "icon-sort-16",
+    "nodeId": "540:12881",
+    "size": 16,
+    "group": "Action"
+  },
+  {
+    "name": "icon-search-16",
+    "nodeId": "599:9345",
+    "size": 16,
+    "group": "Action"
+  },
+  {
+    "name": "icon-dismiss-16",
+    "nodeId": "616:9226",
+    "size": 16,
+    "group": "Dismiss"
+  },
+  {
+    "name": "icon-truck-solid-16",
+    "nodeId": "838:25206",
+    "size": 16,
+    "group": "Badge"
+  },
+  {
+    "name": "icon-fire-solid-16",
+    "nodeId": "838:25208",
+    "size": 16,
+    "group": "Badge"
+  },
+  {
+    "name": "icon-clock-16",
+    "nodeId": "838:25217",
+    "size": 16,
+    "group": "Badge"
+  },
+  {
+    "name": "icon-down-20",
+    "nodeId": "192:34061",
+    "size": 20,
+    "group": "Arrow"
+  },
+  {
+    "name": "icon-up-20",
+    "nodeId": "192:34111",
+    "size": 20,
+    "group": "Arrow"
+  },
+  {
+    "name": "icon-right-20",
+    "nodeId": "135:1764",
+    "size": 20,
+    "group": "Arrow"
+  },
+  {
+    "name": "icon-dismiss-20",
+    "nodeId": "270:544",
+    "size": 20,
+    "group": "Dismiss"
+  },
+  {
+    "name": "icon-arrow-up-20",
+    "nodeId": "543:11040",
+    "size": 20,
+    "group": "Arrow"
+  },
+  {
+    "name": "icon-arrow-down-20",
+    "nodeId": "543:11045",
+    "size": 20,
+    "group": "Arrow"
+  },
+  {
+    "name": "icon-apple-24",
+    "nodeId": "358:577",
+    "size": 24,
+    "group": "ServiceLogo"
+  },
+  {
+    "name": "icon-google-24",
+    "nodeId": "358:579",
+    "size": 24,
+    "group": "ServiceLogo"
+  },
+  {
+    "name": "icon-facebook-24",
+    "nodeId": "358:585",
+    "size": 24,
+    "group": "ServiceLogo"
+  },
+  {
+    "name": "icon-wallet-24",
+    "nodeId": "931:18882",
+    "size": 24,
+    "group": "Action"
+  },
+  {
+    "name": "icon-sheet-edit-24",
+    "nodeId": "931:18889",
+    "size": 24,
+    "group": "Action"
+  },
+  {
+    "name": "icon-scale-24",
+    "nodeId": "931:18895",
+    "size": 24,
+    "group": "Action"
+  },
+  {
+    "name": "icon-posh-shows-24",
+    "nodeId": "931:18897",
+    "size": 24,
+    "group": "Posh"
+  },
+  {
+    "name": "icon-person-group-24",
+    "nodeId": "931:18902",
+    "size": 24,
+    "group": "Person"
+  },
+  {
+    "name": "icon-person-check-24",
+    "nodeId": "931:18904",
+    "size": 24,
+    "group": "Person"
+  },
+  {
+    "name": "icon-party-24",
+    "nodeId": "931:18906",
+    "size": 24,
+    "group": "Action"
+  },
+  {
+    "name": "icon-paper-24",
+    "nodeId": "931:18911",
+    "size": 24,
+    "group": "Document"
+  },
+  {
+    "name": "icon-money-24",
+    "nodeId": "931:18913",
+    "size": 24,
+    "group": "Finance"
+  },
+  {
+    "name": "icon-message-percentage-24",
+    "nodeId": "931:18917",
+    "size": 24,
+    "group": "Message"
+  },
+  {
+    "name": "icon-rotate-right-24",
+    "nodeId": "932:19810",
+    "size": 24,
+    "group": "Action"
+  },
+  {
+    "name": "icon-megaphone-24",
+    "nodeId": "931:18921",
+    "size": 24,
+    "group": "Action"
+  },
+  {
+    "name": "icon-location-24",
+    "nodeId": "931:18924",
+    "size": 24,
+    "group": "Action"
+  },
+  {
+    "name": "icon-flag-24",
+    "nodeId": "931:18926",
+    "size": 24,
+    "group": "Action"
+  },
+  {
+    "name": "icon-eye-on-24",
+    "nodeId": "931:18928",
+    "size": 24,
+    "group": "Action"
+  },
+  {
+    "name": "icon-consignment-24",
+    "nodeId": "931:18930",
+    "size": 24,
+    "group": "Action"
+  },
+  {
+    "name": "icon-card-add-24",
+    "nodeId": "931:18932",
+    "size": 24,
+    "group": "Finance"
+  },
+  {
+    "name": "icon-card-24",
+    "nodeId": "931:18934",
+    "size": 24,
+    "group": "Finance"
+  },
+  {
+    "name": "icon-bundle-24",
+    "nodeId": "931:18936",
+    "size": 24,
+    "group": "Posh"
+  },
+  {
+    "name": "icon-box-24",
+    "nodeId": "931:18938",
+    "size": 24,
+    "group": "Action"
+  },
+  {
+    "name": "icon-back-24",
+    "nodeId": "192:34050",
+    "size": 24,
+    "group": "Navigation"
+  },
+  {
+    "name": "icon-search-24",
+    "nodeId": "192:34055",
+    "size": 24,
+    "group": "Action"
+  },
+  {
+    "name": "icon-book-24",
+    "nodeId": "932:18154",
+    "size": 24,
+    "group": "Document"
+  },
+  {
+    "name": "icon-message-info-24",
+    "nodeId": "932:18156",
+    "size": 24,
+    "group": "Message"
+  },
+  {
+    "name": "icon-conversation-24",
+    "nodeId": "932:18158",
+    "size": 24,
+    "group": "Message"
+  },
+  {
+    "name": "icon-heart-24",
+    "nodeId": "932:18167",
+    "size": 24,
+    "group": "Action"
+  },
+  {
+    "name": "icon-widget-24",
+    "nodeId": "932:18169",
+    "size": 24,
+    "group": "Action"
+  },
+  {
+    "name": "icon-send-24",
+    "nodeId": "932:19791",
+    "size": 24,
+    "group": "Message"
+  },
+  {
+    "name": "icon-dismiss-word-24",
+    "nodeId": "192:34059",
+    "size": 24,
+    "group": "Dismiss"
+  },
+  {
+    "name": "icon-liked-grid-24",
+    "nodeId": "311:5619",
+    "size": 24,
+    "group": "GridAction"
+  },
+  {
+    "name": "icon-bundle-add-grid-24",
+    "nodeId": "311:5623",
+    "size": 24,
+    "group": "GridAction"
+  },
+  {
+    "name": "icon-bundle-check-grid-24",
+    "nodeId": "311:5622",
+    "size": 24,
+    "group": "GridAction"
+  },
+  {
+    "name": "icon-bundle-bag-grid-24",
+    "nodeId": "311:5621",
+    "size": 24,
+    "group": "GridAction"
+  },
+  {
+    "name": "icon-dismiss-grid-24",
+    "nodeId": "311:5617",
+    "size": 24,
+    "group": "GridAction"
+  },
+  {
+    "name": "icon-share-grid-24",
+    "nodeId": "311:5620",
+    "size": 24,
+    "group": "GridAction"
+  },
+  {
+    "name": "icon-view-grid-24",
+    "nodeId": "331:5922",
+    "size": 24,
+    "group": "GridAction"
+  },
+  {
+    "name": "icon-inactive-grid-24",
+    "nodeId": "455:7433",
+    "size": 24,
+    "group": "GridAction"
+  },
+  {
+    "name": "icon-save-grid-24",
+    "nodeId": "311:5618",
+    "size": 24,
+    "group": "GridAction"
+  },
+  {
+    "name": "icon-save-grid-selected24",
+    "nodeId": "1113:40956",
+    "size": 24,
+    "group": "GridAction"
+  },
+  {
+    "name": "icon-back-nav-24",
+    "nodeId": "996:18251",
+    "size": 24,
+    "group": "Navigation"
+  },
+  {
+    "name": "icon-close-nav-24",
+    "nodeId": "1001:20224",
+    "size": 24,
+    "group": "Navigation"
+  },
+  {
+    "name": "icon-menu-nav-24",
+    "nodeId": "932:18148",
+    "size": 24,
+    "group": "NavBar"
+  },
+  {
+    "name": "icon-neart-nav-24",
+    "nodeId": "932:18174",
+    "size": 24,
+    "group": "NavBar"
+  },
+  {
+    "name": "icon-notification-nav-24",
+    "nodeId": "932:18175",
+    "size": 24,
+    "group": "NavBar"
+  },
+  {
+    "name": "icon-search-mweb-24",
+    "nodeId": "1009:25100",
+    "size": 24,
+    "group": "NavBar"
+  },
+  {
+    "name": "icon-close-28",
+    "nodeId": "192:34048",
+    "size": 28,
+    "group": "Dismiss"
+  },
+  {
+    "name": "icon-check-30",
+    "nodeId": "192:34118",
+    "size": 30,
+    "group": "Action"
+  }
+]
