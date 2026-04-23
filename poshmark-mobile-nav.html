@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poshmark Mobile Nav</title>
+  <style>
+    @font-face {
+      font-family: 'Graphik Web';
+      src: url('Claude/Webfont/Graphik/Graphik-Regular-Web.woff2') format('woff2');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Graphik Web';
+      src: url('Claude/Webfont/Graphik/Graphik-Medium-Web.woff2') format('woff2');
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Nantes Web';
+      src: url('Claude/Webfont/Nantes/StandardVersion/NantesWeb-SemiBold.woff2') format('woff2');
+      font-weight: 600; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Nantes Web';
+      src: url('Claude/Webfont/Nantes/StandardVersion/NantesWeb-SemiBoldItalic.woff2') format('woff2');
+      font-weight: 600; font-style: italic; font-display: swap;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #121212;
+      --white: #ffffff;
+      --divider: #ececec;
+      --gray-50: #f6f6f6;
+      --gray-100: #f2f2f2;
+      --stroke: #e3e3e3;
+      --gray-300: #717171;
+      --live-red: #ba4e41;
+      --graphik: 'Graphik Web', -apple-system, BlinkMacSystemFont, sans-serif;
+      --nantes: 'Nantes Web', Georgia, serif;
+    }
+
+    body {
+      background: #d0d0d0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 0 80px;
+      font-family: var(--graphik);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ==================== PHONE FRAME ==================== */
+    .phone-frame {
+      width: 393px;
+      height: 852px;
+      position: relative;
+      overflow: hidden;
+      background: var(--white);
+      border-radius: 50px;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.12), 0 20px 80px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ==================== STATUS BAR ==================== */
+    .status-bar {
+      height: 59px;
+      background: var(--white);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 53px 12px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 10;
+    }
+    .status-time {
+      font-size: 17px;
+      font-weight: 590;
+      color: var(--black);
+      font-family: -apple-system, sans-serif;
+      line-height: 22px;
+    }
+    .status-icons { display: flex; align-items: center; gap: 7px; }
+    .status-icons img { display: block; }
+
+    /* ==================== APP BANNER ==================== */
+    .app-banner {
+      height: 46px;
+      background: var(--white);
+      border-bottom: 1px solid var(--divider);
+      display: flex;
+      align-items: center;
+      gap: 17px;
+      padding: 0 8px 0 14px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 10;
+    }
+    .app-banner-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+    .app-icon { width: 30px; height: 30px; border-radius: 7px; overflow: hidden; flex-shrink: 0; }
+    .app-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .app-info { display: flex; flex-direction: column; }
+    .app-name { font-size: 14px; font-family: -apple-system, sans-serif; font-weight: 500; color: var(--black); line-height: 1.3; white-space: nowrap; }
+    .app-sub  { font-size: 11px; font-family: -apple-system, sans-serif; color: #8c8c8c; line-height: 1.3; }
+    .app-open-btn {
+      height: 28px; padding: 0 12px;
+      background: #0088ff; color: #fff;
+      border-radius: 26px; font-size: 15px;
+      font-family: -apple-system, sans-serif; font-weight: 500;
+      border: none; cursor: pointer; white-space: nowrap; flex-shrink: 0;
+    }
+
+    /* ==================== NAV BAR ==================== */
+    .mobile-nav {
+      height: 56px;
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 10;
+    }
+    .nav-left { display: flex; align-items: center; gap: 8px; }
+    .nav-hamburger {
+      width: 24px; height: 24px;
+      background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0;
+    }
+    .nav-hamburger img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .nav-logo { width: 112px; height: 20px; display: block; object-fit: contain; }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .nav-icon-btn {
+      width: 24px; height: 24px;
+      background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0;
+    }
+    .nav-icon-btn img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .nav-avatar { width: 24px; height: 24px; border-radius: 50%; overflow: hidden; cursor: pointer; flex-shrink: 0; }
+    .nav-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .nav-login-btn {
+      height: 32px; padding: 0 12px;
+      background: var(--black); color: var(--white);
+      border-radius: 4px; font-size: 13px; font-family: var(--graphik);
+      border: none; cursor: pointer; white-space: nowrap; line-height: 18px;
+    }
+    /* logged-out hides icons; logged-in hides login btn */
+    .nav-right.logged-out .nav-icons-group { display: none; }
+    .nav-right.logged-in  .nav-login-btn   { display: none; }
+
+    /* ==================== SEARCH BAR ==================== */
+    .mobile-search-wrap {
+      padding: 0 14px 16px;
+      background: var(--white);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 10;
+    }
+    .mobile-search-bar {
+      height: 44px;
+      background: var(--gray-50); border: 1px solid var(--stroke);
+      border-radius: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 12px 0 18px;
+    }
+    .mobile-search-ph { font-size: 15px; color: var(--gray-300); font-family: var(--graphik); }
+    .mobile-search-icon { width: 24px; height: 24px; position: relative; overflow: hidden; flex-shrink: 0; }
+    .mobile-search-icon img { position: absolute; width: 14.8px; height: 14.8px; top: 4.6px; left: 4.6px; display: block; }
+
+    /* ==================== PAGE CONTENT ==================== */
+    .page-content { flex: 1; background: var(--white); }
+
+    /* ==================== BASE OVERLAYS ==================== */
+    /* All overlays: positioned from top 105px (below status + app banner) */
+    .overlay {
+      position: absolute;
+      top: 105px; left: 0; right: 0; bottom: 0;
+      z-index: 100;
+      display: flex;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .overlay.open { pointer-events: all; opacity: 1; }
+
+    .dim-tap { flex: 1; background: rgba(0,0,0,0.6); cursor: pointer; }
+
+    /* ==================== MENU DRAWER ==================== */
+    #menuOverlay { z-index: 100; }
+
+    .menu-drawer {
+      width: 353px;
+      height: 100%;
+      background: var(--white);
+      display: flex; flex-direction: column;
+      flex-shrink: 0;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+    }
+    .overlay.open .menu-drawer { transform: translateX(0); }
+
+    .menu-header {
+      height: 56px;
+      border-bottom: 1px solid var(--divider);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 14px;
+      flex-shrink: 0;
+    }
+    .menu-logo { width: 112px; height: 20px; object-fit: contain; display: block; }
+    .menu-close-btn {
+      width: 32px; height: 32px;
+      background: var(--gray-50); border: none; border-radius: 50%;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .menu-close-btn svg { display: block; }
+
+    .menu-scroll {
+      flex: 1; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 24px;
+      padding: 20px 0;
+    }
+
+    /* Category section */
+    .menu-cat-section { display: flex; flex-direction: column; gap: 20px; }
+    .menu-section-title-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 0 14px;
+    }
+    .menu-section-title {
+      font-family: var(--nantes); font-size: 19px; font-weight: 600;
+      line-height: 23px; color: var(--black); flex: 1;
+    }
+    .menu-see-more {
+      font-size: 13px; color: var(--black);
+      text-decoration: underline; cursor: pointer; font-family: var(--graphik);
+    }
+
+    .cat-grid-wrap { display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 0 8px; }
+    .cat-grid { display: flex; width: 100%; }
+    .cat-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .cat-thumb {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      width: 100%; cursor: pointer;
+    }
+    .cat-thumb:active .cat-circle { opacity: 0.75; }
+    .cat-circle {
+      width: 48px; height: 48px; border-radius: 50%;
+      overflow: hidden; background: var(--gray-100); flex-shrink: 0;
+    }
+    .cat-circle img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cat-label { font-size: 14px; font-family: var(--graphik); color: var(--black); line-height: 19px; text-align: center; }
+
+    /* second row: hidden by default, shown when expanded */
+    .cat-grid.row2 { display: none; }
+    .cat-grid.row2.visible { display: flex; }
+
+    .expand-btn {
+      width: 32px; height: 32px;
+      border: 1px solid var(--stroke); border-radius: 50%;
+      background: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .expand-btn svg { transition: transform 0.2s ease; }
+    .expand-btn.expanded svg { transform: rotate(180deg); }
+
+    /* Divider */
+    .menu-divider { height: 1px; background: var(--divider); margin: 0 14px; flex-shrink: 0; }
+
+    /* Brand section */
+    .menu-brand-section { display: flex; flex-direction: column; gap: 16px; padding: 0 14px; }
+    .brand-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
+    }
+    .brand-thumb {
+      aspect-ratio: 1; position: relative; overflow: hidden;
+      background: var(--gray-50); cursor: pointer;
+    }
+    .brand-thumb-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+    .brand-thumb-dim { position: absolute; inset: 0; background: rgba(0,0,0,0.3); }
+    .brand-thumb-logo {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .brand-thumb-logo img { max-width: 68%; max-height: 28%; object-fit: contain; display: block; }
+
+    /* Action buttons */
+    .menu-buttons { display: flex; gap: 6px; padding: 0 14px; }
+    .menu-btn {
+      flex: 1; height: 44px;
+      border-radius: 4px; font-size: 15px; font-family: var(--graphik);
+      cursor: pointer; background: none;
+      display: flex; align-items: center; justify-content: center; gap: 2px;
+    }
+    .menu-btn-sell { border: 1px solid var(--black); color: var(--black); }
+    .menu-btn-live { border: 1px solid var(--live-red); color: var(--live-red); }
+    .menu-btn-live img { width: 24px; height: 24px; display: block; }
+
+    /* ==================== CATEGORY DETAIL ==================== */
+    #catDetailOverlay { z-index: 200; }
+
+    .cat-detail-panel {
+      width: 353px; height: 100%;
+      background: var(--white);
+      display: flex; flex-direction: column;
+      flex-shrink: 0;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+    }
+    .overlay.open .cat-detail-panel { transform: translateX(0); }
+
+    .cat-detail-header {
+      height: 56px;
+      border-bottom: 1px solid var(--divider);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 14px; flex-shrink: 0;
+    }
+    .icon-btn-24 {
+      width: 24px; height: 24px;
+      background: none; border: none; padding: 0; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .cat-detail-hero {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 28px 0 20px; gap: 12px; flex-shrink: 0;
+    }
+    .cat-hero-circle {
+      width: 96px; height: 96px; border-radius: 50%;
+      overflow: hidden; background: var(--gray-100);
+    }
+    .cat-hero-circle img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cat-hero-title { font-family: var(--nantes); font-size: 30px; font-weight: 600; line-height: 36px; color: var(--black); }
+
+    .cat-detail-list { flex: 1; overflow-y: auto; }
+    .cat-detail-item {
+      height: 60px;
+      border-bottom: 1px solid var(--divider);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 14px; cursor: pointer;
+    }
+    .cat-detail-item:active { background: var(--gray-50); }
+    .cat-item-name { font-size: 15px; font-family: var(--graphik); color: var(--black); }
+
+    /* ==================== ACCOUNT MENU ==================== */
+    #accountOverlay { z-index: 300; }
+
+    .account-panel {
+      width: 100%; height: 100%;
+      background: var(--white);
+      display: flex; flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.25s ease;
+    }
+    .overlay.open .account-panel { transform: translateX(0); }
+
+    .account-header {
+      height: 56px;
+      border-bottom: 1px solid var(--divider);
+      display: flex; align-items: center;
+      padding: 0 14px; flex-shrink: 0;
+    }
+
+    .account-profile {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 14px; border-bottom: 1px solid var(--divider); flex-shrink: 0;
+    }
+    .account-avatar { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+    .account-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .account-username { font-size: 15px; font-weight: 500; color: var(--black); font-family: var(--graphik); line-height: 20px; }
+    .account-closet-label { font-size: 13px; color: var(--gray-300); font-family: var(--graphik); line-height: 18px; }
+
+    .account-scroll { flex: 1; overflow-y: auto; }
+
+    .account-section-title {
+      font-size: 19px; font-family: var(--nantes); font-weight: 600;
+      color: var(--black); padding: 20px 14px 4px; line-height: 23px;
+    }
+    .account-item {
+      height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 14px;
+      border-bottom: 1px solid var(--divider);
+      cursor: pointer;
+    }
+    .account-item:active { background: var(--gray-50); }
+    .account-item-left { display: flex; align-items: center; gap: 12px; }
+    .account-item-icon { width: 20px; height: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .account-item-name { font-size: 15px; font-family: var(--graphik); color: var(--black); line-height: 20px; }
+    .account-item-chevron { color: var(--gray-300); }
+
+    .account-group-item {
+      height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 14px;
+      border-bottom: 1px solid var(--divider);
+      cursor: pointer;
+    }
+    .account-group-item:active { background: var(--gray-50); }
+    .account-group-label { font-size: 15px; font-family: var(--graphik); color: var(--black); }
+
+    .account-logout-wrap { padding: 24px 14px; }
+    .account-logout-btn {
+      width: 100%; height: 44px;
+      border: 1px solid var(--divider); border-radius: 4px;
+      background: none; font-size: 15px; font-family: var(--graphik);
+      color: var(--black); cursor: pointer;
+    }
+
+    /* ==================== STATE TOGGLE (demo) ==================== */
+    .state-bar {
+      margin-top: 28px;
+      display: flex; gap: 8px; align-items: center;
+    }
+    .state-btn {
+      height: 34px; padding: 0 16px;
+      border-radius: 17px; border: 1.5px solid #999;
+      background: #fff; font-size: 13px; color: #333;
+      cursor: pointer; font-family: var(--graphik);
+      transition: all 0.15s;
+    }
+    .state-btn.active { background: var(--black); color: #fff; border-color: var(--black); }
+  </style>
+</head>
+<body>
+
+<div class="phone-frame" id="phoneFrame">
+
+  <!-- ====== STATUS BAR ====== -->
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <img src="https://www.figma.com/api/mcp/asset/5ff8f7ea-55c9-4359-875b-79a3d2b417ce" width="19" height="12" alt="">
+      <img src="https://www.figma.com/api/mcp/asset/743766a0-548b-4c32-9978-83a0da0fac03" width="17" height="12" alt="">
+      <img src="https://www.figma.com/api/mcp/asset/e8b39435-c54b-424d-926d-c37c41ede18f" width="27" height="13" alt="">
+    </div>
+  </div>
+
+  <!-- ====== APP DOWNLOAD BANNER ====== -->
+  <div class="app-banner">
+    <div class="app-banner-left">
+      <div class="app-icon">
+        <img src="https://www.figma.com/api/mcp/asset/da5fac2a-5e0d-4025-a290-0951dd112cdd" alt="Poshmark">
+      </div>
+      <div class="app-info">
+        <div class="app-name">Poshmark : Buy &amp; Sell Fashion</div>
+        <div class="app-sub">Open in the Poshmark app</div>
+      </div>
+    </div>
+    <button class="app-open-btn">OPEN</button>
+  </div>
+
+  <!-- ====== NAV BAR ====== -->
+  <div class="mobile-nav">
+    <div class="nav-left">
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
+        <img src="https://www.figma.com/api/mcp/asset/a29818be-509e-4cc6-840e-6cfbbdb1efe4" alt="">
+      </button>
+      <img class="nav-logo" src="https://www.figma.com/api/mcp/asset/5005235f-3637-4852-8a2e-8217fce621f9" alt="POSHMARK">
+    </div>
+    <!-- Logged IN state -->
+    <div class="nav-right logged-in" id="navRight">
+      <div class="nav-icons-group" style="display:flex;align-items:center;gap:10px;">
+        <button class="nav-icon-btn" aria-label="Wishlist">
+          <img src="https://www.figma.com/api/mcp/asset/8b2e7e60-9044-41de-bd8b-a101fa167166" alt="">
+        </button>
+        <button class="nav-icon-btn" aria-label="Notifications">
+          <img src="https://www.figma.com/api/mcp/asset/69d06e68-8f89-4a4b-ace1-d250fbd71a1f" alt="">
+        </button>
+        <div class="nav-avatar" id="navAvatar">
+          <img src="https://www.figma.com/api/mcp/asset/8e90223b-b5d7-4f04-8e64-f47c5842defe" alt="Profile">
+        </div>
+      </div>
+      <button class="nav-login-btn" id="navLoginBtn">Log In</button>
+    </div>
+  </div>
+
+  <!-- ====== SEARCH BAR ====== -->
+  <div class="mobile-search-wrap">
+    <div class="mobile-search-bar">
+      <span class="mobile-search-ph">What are you looking for?</span>
+      <div class="mobile-search-icon">
+        <img src="https://www.figma.com/api/mcp/asset/f255fda8-c05e-4260-a698-4936d998b8bc" alt="">
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== PAGE CONTENT (empty for nav prototype) ====== -->
+  <div class="page-content"></div>
+
+  <!-- ================================================================
+       MENU OVERLAY
+  ================================================================ -->
+  <div class="overlay" id="menuOverlay">
+    <div class="menu-drawer">
+      <!-- Header -->
+      <div class="menu-header">
+        <img class="menu-logo" src="https://www.figma.com/api/mcp/asset/5005235f-3637-4852-8a2e-8217fce621f9" alt="POSHMARK">
+        <button class="menu-close-btn" id="menuCloseBtn" aria-label="Close">
+          <!-- X icon -->
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <path d="M1 1L9 9M9 1L1 9" stroke="#121212" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Scrollable content -->
+      <div class="menu-scroll">
+
+        <!-- Category section -->
+        <div class="menu-cat-section">
+          <div class="menu-section-title-row">
+            <span class="menu-section-title">Category</span>
+          </div>
+          <div class="cat-grid-wrap">
+            <!-- Row 1: Women / Men / Kids / Home -->
+            <div class="cat-grid row1">
+              <div class="cat-col">
+                <div class="cat-thumb" data-cat="Women">
+                  <div class="cat-circle"><img src="https://www.figma.com/api/mcp/asset/6e4d42e1-bc91-4850-8595-67c7ef71fb20" alt="Women"></div>
+                  <span class="cat-label">Women</span>
+                </div>
+              </div>
+              <div class="cat-col">
+                <div class="cat-thumb" data-cat="Men">
+                  <div class="cat-circle"><img src="https://www.figma.com/api/mcp/asset/ac5a315f-a457-4428-bc20-9ef5d1810d37" alt="Men"></div>
+                  <span class="cat-label">Men</span>
+                </div>
+              </div>
+              <div class="cat-col">
+                <div class="cat-thumb" data-cat="Kids">
+                  <div class="cat-circle"><img src="https://www.figma.com/api/mcp/asset/71580923-2933-400b-8c0f-46957ddda819" alt="Kids"></div>
+                  <span class="cat-label">Kids</span>
+                </div>
+              </div>
+              <div class="cat-col">
+                <div class="cat-thumb" data-cat="Home">
+                  <div class="cat-circle"><img src="https://www.figma.com/api/mcp/asset/7517e788-7bd0-4cfd-9fbc-3bf2b6df394f" alt="Home"></div>
+                  <span class="cat-label">Home</span>
+                </div>
+              </div>
+            </div>
+            <!-- Row 2: Pets / Electronics / Luxury / Beauty (collapsed) -->
+            <div class="cat-grid row2" id="catRow2">
+              <div class="cat-col">
+                <div class="cat-thumb" data-cat="Pets">
+                  <div class="cat-circle"><img src="https://www.figma.com/api/mcp/asset/6d06a768-99ab-43f9-b3b8-8251903722e4" alt="Pets"></div>
+                  <span class="cat-label">Pets</span>
+                </div>
+              </div>
+              <div class="cat-col">
+                <div class="cat-thumb" data-cat="Electronics">
+                  <div class="cat-circle"><img src="https://www.figma.com/api/mcp/asset/3397d057-8a84-43e7-ba07-f292192aea2d" alt="Electronics"></div>
+                  <span class="cat-label">Electronics</span>
+                </div>
+              </div>
+              <div class="cat-col">
+                <div class="cat-thumb" data-cat="Luxury">
+                  <div class="cat-circle"><img src="https://www.figma.com/api/mcp/asset/0474744a-0a1a-48f0-80cb-288fcd4521e5" alt="Luxury"></div>
+                  <span class="cat-label">Luxury</span>
+                </div>
+              </div>
+              <div class="cat-col">
+                <div class="cat-thumb" data-cat="Beauty">
+                  <div class="cat-circle" style="background:#f9e8e5;"></div>
+                  <span class="cat-label">Beauty</span>
+                </div>
+              </div>
+            </div>
+            <!-- Expand button -->
+            <button class="expand-btn" id="expandBtn" aria-label="Show more categories">
+              <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+                <path d="M1 1L6 6L11 1" stroke="#121212" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="menu-divider"></div>
+
+        <!-- Brand section -->
+        <div class="menu-brand-section">
+          <div class="menu-section-title-row" style="padding:0;">
+            <span class="menu-section-title">Brand</span>
+            <span class="menu-see-more">See More</span>
+          </div>
+          <div class="brand-grid">
+            <div class="brand-thumb">
+              <img class="brand-thumb-bg" src="https://www.figma.com/api/mcp/asset/bf213f15-f943-46cf-92f9-5ca216c77101" alt="">
+              <div class="brand-thumb-dim"></div>
+              <div class="brand-thumb-logo"><img src="https://www.figma.com/api/mcp/asset/249a5184-78b9-4cad-8175-630cc70ce51a" alt="Bottega Veneta"></div>
+            </div>
+            <div class="brand-thumb">
+              <img class="brand-thumb-bg" src="https://www.figma.com/api/mcp/asset/b52b133e-90d5-4112-9181-a5d990129b28" alt="">
+              <div class="brand-thumb-dim"></div>
+              <div class="brand-thumb-logo"><img src="https://www.figma.com/api/mcp/asset/b1e73d75-20f3-4b4a-9534-9f20faa5413e" alt="BODE"></div>
+            </div>
+            <div class="brand-thumb">
+              <img class="brand-thumb-bg" src="https://www.figma.com/api/mcp/asset/2d864667-a66f-441a-aef5-60ba502f545e" alt="">
+              <div class="brand-thumb-dim"></div>
+              <div class="brand-thumb-logo"><img src="https://www.figma.com/api/mcp/asset/6f04178b-2da3-404f-9d69-025620df2913" alt="Brand"></div>
+            </div>
+            <div class="brand-thumb">
+              <img class="brand-thumb-bg" src="https://www.figma.com/api/mcp/asset/37174de4-0d0c-4088-89bd-29efc75ebc73" alt="">
+              <div class="brand-thumb-dim"></div>
+              <div class="brand-thumb-logo"><img src="https://www.figma.com/api/mcp/asset/b43b5a10-5fcc-43d4-b865-3714934afb4b" alt="Brand"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="menu-divider"></div>
+
+        <!-- Action buttons -->
+        <div class="menu-buttons">
+          <button class="menu-btn menu-btn-sell">Sell Now</button>
+          <button class="menu-btn menu-btn-live">
+            <img src="https://www.figma.com/api/mcp/asset/5a578ee8-2409-4f0d-a401-0910feb0a1ba" alt="">
+            Posh Live
+          </button>
+        </div>
+
+      </div><!-- /menu-scroll -->
+    </div><!-- /menu-drawer -->
+
+    <div class="dim-tap" id="menuDimTap"></div>
+  </div><!-- /menuOverlay -->
+
+  <!-- ================================================================
+       CATEGORY DETAIL OVERLAY
+  ================================================================ -->
+  <div class="overlay" id="catDetailOverlay">
+    <div class="cat-detail-panel">
+      <!-- Header -->
+      <div class="cat-detail-header">
+        <button class="icon-btn-24" id="catBackBtn" aria-label="Back">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18L9 12L15 6" stroke="#121212" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="icon-btn-24" id="catCloseBtn" aria-label="Close">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M6 6L18 18M18 6L6 18" stroke="#121212" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <!-- Hero -->
+      <div class="cat-detail-hero">
+        <div class="cat-hero-circle" id="catHeroCircle">
+          <img id="catHeroImg" src="https://www.figma.com/api/mcp/asset/6e4d42e1-bc91-4850-8595-67c7ef71fb20" alt="">
+        </div>
+        <span class="cat-hero-title" id="catHeroTitle">Women</span>
+      </div>
+      <!-- Subcategory list -->
+      <div class="cat-detail-list" id="catDetailList">
+        <!-- populated by JS -->
+      </div>
+    </div>
+    <div class="dim-tap" id="catDimTap"></div>
+  </div>
+
+  <!-- ================================================================
+       ACCOUNT MENU OVERLAY
+  ================================================================ -->
+  <div class="overlay" id="accountOverlay">
+    <div class="account-panel">
+      <!-- Header -->
+      <div class="account-header">
+        <button class="icon-btn-24" id="accountBackBtn" aria-label="Back">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18L9 12L15 6" stroke="#121212" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      <!-- Profile -->
+      <div class="account-profile">
+        <div class="account-avatar">
+          <img src="https://www.figma.com/api/mcp/asset/8e90223b-b5d7-4f04-8e64-f47c5842defe" alt="Profile">
+        </div>
+        <div>
+          <div class="account-username">@katie42</div>
+          <div class="account-closet-label">Closet</div>
+        </div>
+      </div>
+      <!-- Content -->
+      <div class="account-scroll">
+        <div class="account-section-title">My Activity</div>
+        <div class="account-item"><div class="account-item-left"><span class="account-item-name">Likes</span></div><span class="account-item-chevron">›</span></div>
+        <div class="account-item"><div class="account-item-left"><span class="account-item-name">Active Offers</span></div><span class="account-item-chevron">›</span></div>
+        <div class="account-item"><div class="account-item-left"><span class="account-item-name">Purchases</span></div><span class="account-item-chevron">›</span></div>
+        <div class="account-item"><div class="account-item-left"><span class="account-item-name">Bundles</span></div><span class="account-item-chevron">›</span></div>
+        <div class="account-item"><div class="account-item-left"><span class="account-item-name">Recent Views</span></div><span class="account-item-chevron">›</span></div>
+        <div class="account-item"><div class="account-item-left"><span class="account-item-name">Following</span></div><span class="account-item-chevron">›</span></div>
+
+        <div class="account-section-title">Selling</div>
+        <div class="account-item"><div class="account-item-left"><span class="account-item-name">Sales</span></div><span class="account-item-chevron">›</span></div>
+        <div class="account-item"><div class="account-item-left"><span class="account-item-name">Posh Live</span></div><span class="account-item-chevron">›</span></div>
+        <div class="account-item"><div class="account-item-left"><span class="account-item-name">Promoted Closet</span></div><span class="account-item-chevron">›</span></div>
+        <div class="account-item"><div class="account-item-left"><span class="account-item-name">Consignment</span></div><span class="account-item-chevron">›</span></div>
+        <div class="account-item"><div class="account-item-left"><span class="account-item-name">Seller Updates</span></div><span class="account-item-chevron">›</span></div>
+        <div class="account-item"><div class="account-item-left"><span class="account-item-name">Drafts</span></div><span class="account-item-chevron">›</span></div>
+        <div class="account-item"><div class="account-item-left"><span class="account-item-name">Campaigns</span></div><span class="account-item-chevron">›</span></div>
+        <div class="account-item"><div class="account-item-left"><span class="account-item-name">Shoppers</span></div><span class="account-item-chevron">›</span></div>
+        <div class="account-item"><div class="account-item-left"><span class="account-item-name">Closet Widget</span></div><span class="account-item-chevron">›</span></div>
+
+        <div class="account-group-item"><span class="account-group-label">Posh Parties</span><span class="account-item-chevron">›</span></div>
+        <div class="account-group-item"><span class="account-group-label">Shopper Settings</span><span class="account-item-chevron">›</span></div>
+        <div class="account-group-item"><span class="account-group-label">Account Settings</span><span class="account-item-chevron">›</span></div>
+        <div class="account-group-item"><span class="account-group-label">Help and Resources</span><span class="account-item-chevron">›</span></div>
+
+        <div class="account-logout-wrap">
+          <button class="account-logout-btn">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /phone-frame -->
+
+<!-- State toggle bar -->
+<div class="state-bar">
+  <button class="state-btn active" id="toggleLoggedIn">Logged In</button>
+  <button class="state-btn" id="toggleLoggedOut">Logged Out</button>
+</div>
+
+<script>
+  /* ---- Data ---- */
+  var catData = {
+    Women:       { img: 'https://www.figma.com/api/mcp/asset/6e4d42e1-bc91-4850-8595-67c7ef71fb20',
+                   subs: ['Accessories','Bags','Dresses','Intimates & Sleepwear','Jackets & Coats','Jeans','Jewelry','Makeup','Pants & Jumpsuits','Shoes','Shorts','Skirts','Sweaters','Swim','Tops'] },
+    Men:         { img: 'https://www.figma.com/api/mcp/asset/ac5a315f-a457-4428-bc20-9ef5d1810d37',
+                   subs: ['Accessories','Bags','Jackets & Coats','Jeans','Pants','Shirts','Shoes','Shorts','Suits & Blazers','Sweaters','Swim'] },
+    Kids:        { img: 'https://www.figma.com/api/mcp/asset/71580923-2933-400b-8c0f-46957ddda819',
+                   subs: ['Accessories','Bottoms','Dresses','Jackets & Coats','Matching Sets','One Pieces','Pajamas','Shirts & Tops','Shoes','Swim'] },
+    Home:        { img: 'https://www.figma.com/api/mcp/asset/7517e788-7bd0-4cfd-9fbc-3bf2b6df394f',
+                   subs: ['Accents','Art','Bath','Bedding','Design','Dining','Games','Holiday','Kitchen','Office','Storage & Organization','Wall Decor'] },
+    Pets:        { img: 'https://www.figma.com/api/mcp/asset/6d06a768-99ab-43f9-b3b8-8251903722e4',
+                   subs: ['Dog','Cat','Bird','Fish','Reptile','Small Pets','Other'] },
+    Electronics: { img: 'https://www.figma.com/api/mcp/asset/3397d057-8a84-43e7-ba07-f292192aea2d',
+                   subs: ['Cameras & Photo','Computers & Laptops','Cell Phones & Accessories','Wearables','Tablets','Video Games','VR & AR','Headphones','Other'] },
+    Luxury:      { img: 'https://www.figma.com/api/mcp/asset/0474744a-0a1a-48f0-80cb-288fcd4521e5',
+                   subs: ["Women's Bags","Women's Jewelry","Women's Apparel","Women's Shoes","Men's Bags","Men's Apparel","Men's Shoes"] },
+    Beauty:      { img: null,
+                   subs: ['Makeup','Skincare','Hair','Bath & Body'] }
+  };
+
+  /* ---- Elements ---- */
+  var menuOverlay     = document.getElementById('menuOverlay');
+  var menuCloseBtn    = document.getElementById('menuCloseBtn');
+  var menuDimTap      = document.getElementById('menuDimTap');
+  var navHamburger    = document.getElementById('navHamburger');
+  var expandBtn       = document.getElementById('expandBtn');
+  var catRow2         = document.getElementById('catRow2');
+
+  var catDetailOverlay = document.getElementById('catDetailOverlay');
+  var catBackBtn       = document.getElementById('catBackBtn');
+  var catCloseBtn      = document.getElementById('catCloseBtn');
+  var catDimTap        = document.getElementById('catDimTap');
+  var catHeroImg       = document.getElementById('catHeroImg');
+  var catHeroTitle     = document.getElementById('catHeroTitle');
+  var catDetailList    = document.getElementById('catDetailList');
+
+  var accountOverlay  = document.getElementById('accountOverlay');
+  var accountBackBtn  = document.getElementById('accountBackBtn');
+  var navAvatar       = document.getElementById('navAvatar');
+
+  var toggleLoggedIn  = document.getElementById('toggleLoggedIn');
+  var toggleLoggedOut = document.getElementById('toggleLoggedOut');
+  var navRight        = document.getElementById('navRight');
+
+  /* ---- Menu ---- */
+  navHamburger.addEventListener('click', function() { menuOverlay.classList.add('open'); });
+  menuCloseBtn.addEventListener('click', closeMenu);
+  menuDimTap.addEventListener('click', closeMenu);
+
+  function closeMenu() {
+    menuOverlay.classList.remove('open');
+    catDetailOverlay.classList.remove('open');
+  }
+
+  /* ---- Expand categories ---- */
+  expandBtn.addEventListener('click', function() {
+    var expanded = expandBtn.classList.toggle('expanded');
+    catRow2.classList.toggle('visible', expanded);
+  });
+
+  /* ---- Category detail ---- */
+  document.querySelectorAll('.cat-thumb').forEach(function(thumb) {
+    thumb.addEventListener('click', function() {
+      var cat = thumb.dataset.cat;
+      var data = catData[cat];
+      if (!data) return;
+      // Update hero
+      catHeroTitle.textContent = cat;
+      if (data.img) {
+        catHeroImg.src = data.img;
+        catHeroImg.style.display = 'block';
+      } else {
+        catHeroImg.style.display = 'none';
+      }
+      // Populate list
+      catDetailList.innerHTML = '';
+      data.subs.forEach(function(sub) {
+        var item = document.createElement('div');
+        item.className = 'cat-detail-item';
+        item.innerHTML = '<span class="cat-item-name">' + sub + '</span>'
+                       + '<svg width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M1 1L7 6L1 11" stroke="#717171" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        catDetailList.appendChild(item);
+      });
+      catDetailOverlay.classList.add('open');
+    });
+  });
+
+  catBackBtn.addEventListener('click', function() {
+    catDetailOverlay.classList.remove('open');
+  });
+  catCloseBtn.addEventListener('click', closeMenu);
+  catDimTap.addEventListener('click', function() {
+    catDetailOverlay.classList.remove('open');
+  });
+
+  /* ---- Account menu ---- */
+  navAvatar.addEventListener('click', function() {
+    accountOverlay.classList.add('open');
+  });
+  accountBackBtn.addEventListener('click', function() {
+    accountOverlay.classList.remove('open');
+  });
+
+  /* ---- Login state toggle ---- */
+  toggleLoggedIn.addEventListener('click', function() {
+    navRight.className = 'nav-right logged-in';
+    toggleLoggedIn.classList.add('active');
+    toggleLoggedOut.classList.remove('active');
+  });
+  toggleLoggedOut.addEventListener('click', function() {
+    navRight.className = 'nav-right logged-out';
+    toggleLoggedOut.classList.add('active');
+    toggleLoggedIn.classList.remove('active');
+  });
+</script>
+
+</body>
+</html>

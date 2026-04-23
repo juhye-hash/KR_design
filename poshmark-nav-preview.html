@@ -1,0 +1,3222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poshmark</title>
+  <style>
+    /* ---- Local Webfonts ---- */
+    @font-face {
+      font-family: 'Graphik Web';
+      src: url('Claude/Webfont/Graphik/Graphik-Regular-Web.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Graphik Web';
+      src: url('Claude/Webfont/Graphik/Graphik-Medium-Web.woff2') format('woff2');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Graphik Web';
+      src: url('Claude/Webfont/Graphik/Graphik-Semibold-Web.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Nantes Web';
+      src: url('Claude/Webfont/Nantes/StandardVersion/NantesWeb-SemiBold.woff2') format('woff2'),
+           url('Claude/Webfont/Nantes/StandardVersion/NantesWeb-SemiBold.woff') format('woff');
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Nantes Web';
+      src: url('Claude/Webfont/Nantes/StandardVersion/NantesWeb-SemiBoldItalic.woff2') format('woff2'),
+           url('Claude/Webfont/Nantes/StandardVersion/NantesWeb-SemiBoldItalic.woff') format('woff');
+      font-weight: 600;
+      font-style: italic;
+      font-display: swap;
+    }
+  </style>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #121212;
+      --white: #ffffff;
+      --gray-50: #f6f6f6;
+      --gray-100: #f2f2f2;
+      --divider: #ececec;
+      --stroke: #e3e3e3;
+      --gray-200: #999;
+      --gray-300: #717171;
+      --burgundy-50: #f8f1f3;
+      --live-red: #ba4e41;
+      --nantes: 'Nantes Web', Georgia, serif;
+      --graphik: 'Graphik Web', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--graphik);
+      color: var(--black);
+      background: #fff;
+      min-width: 992px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+      font-kerning: normal;
+      font-synthesis: none;
+    }
+
+    img { display: block; }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; font-family: var(--graphik); border: none; background: none; }
+
+    /* ===================== NAVIGATION ===================== */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: #fff;
+      border-bottom: 1px solid var(--divider);
+      height: 132px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-bottom: 14px;
+    }
+
+    /* Top bar */
+    .nav-top {
+      height: 80px;
+      border-bottom: 1px solid var(--divider);
+      flex-shrink: 0;
+    }
+
+    .nav-top-inner {
+      width: 100%;
+      padding: 0 max(20px, calc((100vw - 1388px) / 2));
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .nav-logo img {
+      height: 22px;
+      width: 134px;
+      object-fit: contain;
+    }
+
+    /* Search bar: absolutely centered */
+    .nav-search {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: clamp(370px, calc(104.67vw - 746.8px), 706px);
+      height: 44px;
+      background: var(--gray-50);
+      border: 1px solid var(--stroke);
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      padding: 9px 14px 9px 20px;
+      gap: 0;
+    }
+
+    .nav-search-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .nav-search-label {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--black);
+      white-space: nowrap;
+    }
+
+    .nav-search-chevron {
+      width: 12px;
+      height: 12px;
+      object-fit: contain;
+    }
+
+    .nav-search-sep {
+      width: 0;
+      height: 12px;
+      border-left: 1px solid var(--stroke);
+      margin: 0 16px;
+      flex-shrink: 0;
+    }
+
+    .nav-search-placeholder {
+      flex: 1;
+      font-size: 15px;
+      color: var(--gray-300);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .nav-search-icon {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-search-icon img {
+      position: absolute;
+      width: 14.796px;
+      height: 14.796px;
+      top: 4.56px;
+      left: 4.56px;
+      display: block;
+    }
+
+    /* Right actions */
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    /* Logged-in icon group */
+    .nav-icons {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .nav-icon-btn {
+      width: 28px;
+      height: 28px;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .nav-icon-bundle img { width: 17px; height: 18px; object-fit: contain; display: block; }
+    .nav-icon-like img   { width: 20px; height: 17px; object-fit: contain; display: block; }
+    .nav-icon-news img   { width: 18px; height: 20px; object-fit: contain; display: block; }
+
+    .nav-icon-me { overflow: hidden; }
+    .nav-icon-me img {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      object-fit: cover;
+      position: absolute;
+      left: 3px;
+      top: 3px;
+    }
+
+    .nav-login-btn {
+      background: var(--black);
+      color: var(--white);
+      border-radius: 4px;
+      height: 36px;
+      padding: 0 14px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 19px;
+      white-space: nowrap;
+    }
+
+    /* Category bar */
+    .nav-cats {}
+
+    .nav-cats-inner {
+      width: 100%;
+      padding: 0 max(56px, calc((100vw - 1388px) / 2 + 56px));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-cat {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--black);
+      line-height: 20px;
+      white-space: nowrap;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* bold 너비를 미리 예약해 font-weight 전환 시 레이아웃 시프트 방지 */
+    .nav-cat::before {
+      content: attr(data-cat);
+      font-weight: 500;
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .nav-cat-live {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--live-red);
+      cursor: pointer;
+    }
+
+    .nav-cat-live img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    /* ===================== COMMON ===================== */
+    .content {
+      max-width: 1390px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: var(--nantes);
+      font-size: 34px;
+      font-weight: 600;
+      line-height: 48px;
+      color: var(--black);
+      white-space: nowrap;
+    }
+
+    .section-subtitle {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--black);
+      line-height: 20px;
+      margin-top: 4px;
+    }
+
+    .view-all-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--black);
+      border-radius: 4px;
+      height: 44px;
+      width: 120px;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--black);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    /* ===================== HERO ===================== */
+    .hero-section {
+      padding: 48px 0 12px;
+    }
+
+    .hero-grid.content {
+      max-width: 1390px;
+      width: 100%;
+      padding: 0 25px;
+    }
+
+    .hero-grid {
+      display: flex;
+      gap: 2px;
+    }
+
+    .hero-item {
+      flex: 1;
+      aspect-ratio: 300 / 400;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      background: #000;
+    }
+
+    .hero-item img.hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.6) 100%);
+    }
+
+    .hero-text {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 36px;
+      font-family: var(--nantes);
+      font-size: 36px;
+      font-weight: 600;
+      line-height: 39px;
+      color: #fff;
+    }
+
+    /* ===================== TOP PICKS ===================== */
+    .top-picks-section {
+      padding: 28px 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Tabs bar */
+    .tabs-bar {
+      display: flex;
+      align-items: flex-end;
+      border-bottom: 1px solid var(--divider);
+      gap: 12px;
+      margin-top: 0;
+    }
+
+    .tabs-items {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      flex: 1;
+    }
+
+    .tab-item {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--black);
+      padding: 18px 6px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      white-space: nowrap;
+    }
+
+    .tab-item.active {
+      font-weight: 500;
+      border-bottom-color: var(--black);
+    }
+
+    .tabs-view-all {
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 16px;
+    }
+
+    /* Products grid */
+    .products-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding-top: 32px;
+    }
+
+    .products-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .product-card {
+      flex: 1;
+      min-width: 0;
+      cursor: pointer;
+    }
+
+    .product-img-wrap {
+      position: relative;
+      aspect-ratio: 185 / 246;
+      overflow: hidden;
+      background: var(--gray-100);
+    }
+
+    .product-img-wrap > img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-heart {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(246,246,246,0.7);
+      border: 1px solid rgba(255,255,255,0.6);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+
+    .product-heart img {
+      width: 16px;
+      height: 14px;
+      object-fit: contain;
+    }
+
+    .product-badge {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      height: 20px;
+      background: var(--black);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 10px;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 0 8px 0 6px;
+      z-index: 1;
+    }
+
+    .product-info {
+      padding: 8px 6px 0;
+    }
+
+    .product-name {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--black);
+      line-height: 20px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+
+    .product-price-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .product-price {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--black);
+      line-height: 20px;
+    }
+
+    .product-orig-price {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--gray-200);
+      line-height: 20px;
+      text-decoration: line-through;
+    }
+
+    .product-size {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--gray-200);
+      line-height: 20px;
+      margin-left: auto;
+    }
+
+    /* ===================== MOST LISTED BRANDS ===================== */
+    .brands-section {
+      padding: 48px 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .brands-inner {
+      max-width: 1390px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .brands-circles {
+      display: flex;
+      align-items: center;
+      padding-right: 33px;
+    }
+
+    .brand-circle {
+      flex: 1;
+      aspect-ratio: 1 / 1;
+      position: relative;
+      overflow: hidden;
+      border-radius: 50%;
+      margin-right: -33px;
+      cursor: pointer;
+      background: var(--gray-100);
+    }
+
+    .brand-circle img.brand-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-dimmer {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+    }
+
+    .brand-circle img.brand-logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+    }
+
+    /* ===================== EDITOR'S PICK ===================== */
+    .editorial-section {
+      padding: 48px 0 96px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .editorial-inner {
+      max-width: 1390px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .editorial-grid {
+      display: flex;
+      gap: 6px;
+    }
+
+    .editorial-card {
+      flex: 1;
+      aspect-ratio: 300 / 400;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      background: #000;
+    }
+
+    .editorial-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .editorial-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.4) 100%);
+    }
+
+    .editorial-text {
+      position: absolute;
+      bottom: 36px;
+      left: 36px;
+      right: 36px;
+      font-family: var(--nantes);
+      font-size: 46px;
+      font-weight: 600;
+      line-height: 50px;
+      color: #fff;
+    }
+
+    /* ===================== STYLE COLLECTIONS ===================== */
+    .style-section {
+      background: var(--burgundy-50);
+      padding: 48px 0 96px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .style-inner {
+      max-width: 1390px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .style-grid {
+      display: flex;
+      gap: 6px;
+    }
+
+    .style-card {
+      flex: 1;
+      aspect-ratio: 300 / 400;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      background: #000;
+    }
+
+    .style-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .style-dimmer {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .style-text {
+      position: absolute;
+      bottom: 36px;
+      left: 36px;
+      right: 36px;
+      text-align: center;
+    }
+
+    .style-title {
+      font-family: var(--nantes);
+      font-size: 36px;
+      font-weight: 600;
+      line-height: 40px;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .style-sub {
+      font-size: 14px;
+      font-style: italic;
+      color: #fff;
+      line-height: 20px;
+      margin-top: 4px;
+    }
+
+    /* ===================== SHOP BY PRICE ===================== */
+    .shop-price-section {
+      padding: 28px 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* ===================== SHOP THE LOOK ===================== */
+    .look-section {
+      padding: 48px 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .look-inner {
+      max-width: 1390px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .look-header {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .look-header-left {
+      flex: 1;
+    }
+
+    .look-grid {
+      display: flex;
+      gap: 6px;
+    }
+
+    .look-card {
+      flex: 1;
+      aspect-ratio: 300 / 400;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      background: #000;
+    }
+
+    .look-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .look-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.6) 100%);
+    }
+
+    .look-text {
+      position: absolute;
+      bottom: 36px;
+      left: 36px;
+      right: 36px;
+      font-family: var(--nantes);
+      font-size: 36px;
+      font-weight: 600;
+      line-height: 40px;
+      color: #fff;
+      text-align: center;
+    }
+
+    /* ===================== FOOTER ===================== */
+    footer {
+      background: var(--black);
+      color: #fff;
+    }
+
+    .footer-inner {
+      max-width: 1390px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 64px 0 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .footer-top {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    .footer-download {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      min-width: 0;
+    }
+
+    .footer-tagline {
+      font-family: var(--nantes);
+      font-size: 40px;
+      line-height: 42px;
+      font-weight: 600;
+      color: #fff;
+      max-width: 400px;
+    }
+
+    .footer-tagline em {
+      font-style: italic;
+    }
+
+    .footer-app-btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    .footer-apple {
+      width: 108px;
+      height: 36px;
+      border: 1px solid #fff;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .footer-apple img {
+      position: absolute;
+      left: 8px;
+      top: 6px;
+      width: 90px;
+      height: 23px;
+      display: block;
+    }
+
+    .footer-google {
+      width: 122px;
+      height: 36px;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .footer-google img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      max-width: none;
+    }
+
+    .footer-col {
+      width: 221.67px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Country / region selector */
+    .footer-country {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      height: 44px;
+      border: 1px solid #fff;
+      border-radius: 4px;
+      padding: 0 16px 0 14px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .footer-country-inner {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-country-flag {
+      width: 20px;
+      height: 14px;
+      overflow: hidden;
+      border-radius: 1.5px;
+      flex-shrink: 0;
+    }
+
+    .footer-country-flag img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .footer-country-text {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 19px;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .footer-country-arrow {
+      width: 12px;
+      height: 20px;
+      display: block;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+
+    .footer-col-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #fff;
+      line-height: 19px;
+    }
+
+    .footer-col-link {
+      font-size: 14px;
+      font-weight: 400;
+      color: #fff;
+      line-height: 19px;
+      cursor: pointer;
+    }
+
+    .footer-col-link.underline {
+      text-decoration: underline;
+    }
+
+    .footer-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.15);
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-size: 14px;
+      font-weight: 500;
+      color: #fff;
+      line-height: 19px;
+      white-space: nowrap;
+    }
+
+    .footer-link {
+      font-size: 14px;
+      font-weight: 400;
+      color: #fff;
+      line-height: 19px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 13px;
+      align-items: center;
+    }
+
+    .footer-social-icon {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-social-icon img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+
+    /* ===================== NAV INTERACTIONS ===================== */
+
+    /* Search focused / type-open */
+    .nav-search.focused {
+      background: var(--white);
+      border-color: var(--black);
+    }
+    .nav-search-chevron { transition: transform 0.2s; }
+    .nav-search.type-open .nav-search-chevron { transform: rotate(180deg); }
+
+    /* Real search input replacing placeholder span */
+    .nav-search-input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      background: transparent;
+      font-size: 15px;
+      color: var(--black);
+      font-family: var(--graphik);
+      outline: none;
+    }
+    .nav-search-input::placeholder { color: var(--gray-300); }
+    .nav-search-input { caret-color: var(--black); }
+
+    /* Right icon area: clear + search with 4px gap */
+    .nav-search-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    /* Clear (×) button */
+    .nav-search-clear {
+      width: 24px;
+      height: 24px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      padding: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      position: relative;
+    }
+    .nav-search-clear.visible { display: flex; }
+    .nav-search-clear-outer {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: block;
+    }
+    .nav-search-clear-inner {
+      position: absolute;
+      width: 4.75px;
+      height: 4.75px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: block;
+    }
+
+    /* Listings type selector hover */
+    .nav-search-left { cursor: pointer; }
+    .nav-search-left:hover .nav-search-label { text-decoration: underline; }
+
+    /* Search type dropdown */
+    .search-type-dropdown {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 0;
+      background: var(--white);
+      border: 1px solid var(--stroke);
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      min-width: 160px;
+      z-index: 400;
+      overflow: hidden;
+      display: none;
+      padding: 6px 0;
+    }
+    .search-type-dropdown.open { display: block; }
+    .search-type-item {
+      padding: 11px 20px;
+      font-size: 15px;
+      color: var(--black);
+      cursor: pointer;
+      line-height: 20px;
+    }
+    .search-type-item:hover { background: var(--gray-50); }
+    .search-type-item.active { font-weight: 500; }
+
+    /* Category hover: bold + underline only (no auto-open) */
+    .nav-cat { position: relative; transition: font-weight 0.1s; }
+    .nav-cat::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: transparent;
+    }
+    .nav-cat:hover { font-weight: 500; }
+    .nav-cat:hover::after { background: var(--black); }
+    .nav-cat.open { font-weight: 500; }
+    .nav-cat.open::after { background: var(--black); }
+
+    /* Dropdown open: non-selected items go gray */
+    .nav-cats.has-open .nav-cat:not(.open) { color: var(--gray-200); }
+    .nav-cats.has-open .nav-cat:not(.open):hover { color: var(--black); }
+    .nav-cats.has-open .nav-cat-live { color: var(--live-red); }
+
+    /* Category dropdown: full-width background, 1390px centered content */
+    .cat-dropdown {
+      position: fixed;
+      top: 132px;
+      left: 0;
+      right: 0;
+      background: var(--white);
+      z-index: 300;
+      display: none;
+    }
+    .cat-dropdown.open { display: block; }
+    .cat-dropdown-inner {
+      max-width: 1390px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 40px 0;
+      min-height: 415px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    /* Two-column menu links */
+    .cat-menu-cols { display: flex; gap: 24px; flex-shrink: 0; }
+    .cat-col { display: flex; flex-direction: column; gap: 15px; width: 209px; }
+    .cat-item {
+      font-size: 15px;
+      line-height: 20px;
+      color: var(--black);
+      cursor: pointer;
+      width: fit-content;
+    }
+    .cat-item:hover { text-decoration: underline; }
+    .cat-item-header { font-weight: 500; cursor: default; }
+    .cat-item-header:hover { text-decoration: none; }
+
+    /* Editorial images */
+    /* 3 merch cols, each sized to match 1 of 6 home-grid columns (1390px - 5×12px gap) / 6 */
+    .cat-merch { display: flex; gap: 12px; flex-shrink: 0; width: calc(3 * (1390px - 5 * 12px) / 6 + 2 * 12px); }
+    .cat-merch-item { flex: 1; min-width: 0; cursor: pointer; }
+    .cat-merch-thumb {
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
+      background: var(--gray-100);
+    }
+    .cat-merch-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cat-merch-title { margin-top: 12px; font-size: 15px; color: var(--black); line-height: 20px; }
+
+    /* Full-width merch layout (Trending carousel) */
+    .cat-dropdown-inner { position: relative; }
+    .cat-dropdown-inner.merch-full .cat-menu-cols { display: none; }
+    .cat-dropdown-inner.merch-full .cat-merch {
+      flex: 1;
+      width: auto;
+      display: block;
+      overflow: hidden;
+    }
+
+    /* Trending carousel track */
+    .cat-trending-wrap {
+      width: 100%;
+      overflow: hidden;
+    }
+    .cat-trending-track {
+      display: flex;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+    .cat-trending-page {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      flex-shrink: 0;
+    }
+    .cat-trending-item {
+      width: calc((100% - 24px) / 3);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .cat-trending-thumb {
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
+      background: var(--gray-100);
+    }
+    .cat-trending-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .cat-trending-title {
+      margin-top: 12px;
+      font-size: 15px;
+      color: var(--black);
+      line-height: 20px;
+    }
+
+    /* Brand dropdown specific */
+    .cat-brand-panel { display: none; width: 100%; justify-content: space-between; align-items: flex-start; }
+    .cat-brand-panel.visible { display: flex; }
+    .cat-brand-left { flex: 1; min-width: 0; }
+    .cat-brand-recent { display: flex; flex-direction: column; gap: 15px; }
+    .cat-brand-recent-title { font-size: 15px; font-weight: 500; line-height: 20px; color: var(--black); }
+    .cat-brand-recent-item { font-size: 15px; font-weight: 400; line-height: 20px; color: var(--black); cursor: pointer; }
+    .cat-brand-recent-item:hover { text-decoration: underline; }
+    .cat-brand-right { flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; align-items: flex-end; width: 922px; }
+    .cat-brand-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; width: 100%; }
+    .cat-brand-thumb { position: relative; height: 147px; overflow: hidden; cursor: pointer; }
+    .cat-brand-thumb .brand-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cat-brand-thumb .brand-dim { position: absolute; inset: 0; background: rgba(0,0,0,0.3); }
+    .brand-logo-wrap { position: absolute; width: 147px; height: 147px; left: 50%; top: 50%; transform: translate(-50%,-50%); overflow: hidden; }
+    .brand-logo-fill { position: absolute; inset: 0; width: 100%; height: 100%; display: block; max-width: none; object-fit: contain; }
+    .cat-brand-all-link { font-size: 15px; line-height: 20px; text-decoration: underline; color: var(--black); cursor: pointer; }
+    .cat-brand-all-link:hover { opacity: 0.7; }
+
+    /* Carousel arrow buttons: 74×74 circle, in the gutter outside the content area */
+    .cat-carousel-btn {
+      position: absolute;
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      background: var(--white);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      top: 190px;
+      transform: translateY(-50%);
+      z-index: 10;
+      box-shadow: none;
+      transition: background 0.15s;
+    }
+    .cat-carousel-btn.visible { display: flex; }
+    .cat-carousel-btn:hover { background: #f6f6f6; }
+    .cat-carousel-prev { left: -90px; }
+    .cat-carousel-next { right: -90px; }
+    /* Prev: left-pointing chevron (default orientation) */
+    .cat-carousel-btn img { width: 12px; height: 22px; object-fit: contain; display: block; }
+    /* Next: right-pointing — flip the same chevron horizontally, nudge 2px right */
+    .cat-carousel-next img { transform: scaleX(-1); margin-left: 2px; }
+
+    /* ===================== ACCOUNT MENU ===================== */
+    .account-menu {
+      position: fixed;
+      top: 62px;
+      width: 190px;
+      max-height: calc(100vh - 62px - 16px);
+      overflow-y: auto;
+      background: var(--white);
+      border: 1px solid var(--stroke);
+      border-radius: 4px;
+      padding: 22px 18px 18px;
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 500;
+    }
+    .account-menu.open { display: flex; }
+
+.account-menu-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .account-menu-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .account-menu-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .account-menu-name {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .account-menu-username {
+      font-family: var(--nantes);
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 22px;
+      color: var(--black);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .account-menu-closet {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 18px;
+      color: var(--black);
+    }
+
+    .account-menu-divider {
+      height: 1px;
+      background: var(--divider);
+      flex-shrink: 0;
+    }
+
+    .account-menu-sections {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .account-menu-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .account-menu-section-title {
+      font-family: var(--nantes);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 20px;
+      color: var(--black);
+    }
+    .account-menu-section-title.sm {
+      font-size: 15px;
+      line-height: 19px;
+    }
+
+    .account-menu-items {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .account-menu-item {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 19px;
+      color: var(--gray-300);
+      cursor: pointer;
+    }
+    .account-menu-item:hover { text-decoration: underline; }
+
+    /* Nav items section (Posh Parties, Settings, etc.) */
+    .account-menu-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .account-menu-nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-family: var(--nantes);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 20px;
+      color: var(--black);
+    }
+    .account-menu-nav-item.plain:hover span { text-decoration: underline; }
+
+    /* Right chevron arrow */
+    .account-menu-chevron {
+      display: block;
+      width: 11px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .account-menu-logout {
+      flex-shrink: 0;
+      width: 154px;
+      height: 44px;
+      border: 1px solid var(--stroke);
+      border-radius: 4px;
+      background: var(--white);
+      font-size: 15px;
+      font-weight: 400;
+      font-family: var(--graphik);
+      color: var(--black);
+      line-height: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: center;
+    }
+    .account-menu-logout:hover { background: var(--gray-50); }
+
+    /* ===================== ACCOUNT SUB-MENU ===================== */
+    .account-submenu {
+      position: fixed;
+      width: max-content;
+      min-width: 194px;
+      background: var(--white);
+      border: 1px solid var(--stroke);
+      border-radius: 4px;
+      padding: 22px 18px 18px;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 501;
+    }
+    .account-submenu.open { display: flex; }
+
+    .account-submenu-item {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 19px;
+      color: var(--gray-300);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .account-submenu-item:hover { text-decoration: underline; }
+
+    /* Me icon active state: 1.5px black stroke rendered above the avatar */
+    #navMeBtn.active::after {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1.5px solid var(--black);
+      box-sizing: border-box;
+      pointer-events: none;
+    }
+
+    /* Backdrop overlay */
+    .nav-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 190;
+      display: none;
+    }
+    .nav-backdrop.visible { display: block; }
+
+    /* Dim layer: appears below nav when category dropdown is open */
+    .nav-dim {
+      position: fixed;
+      top: 132px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 150;
+      display: none;
+      pointer-events: none;
+    }
+    .nav-dim.visible { display: block; }
+
+    /* ===================== RESPONSIVE: 992–1067px ===================== */
+    @media (max-width: 1067px) {
+      body {
+        min-width: 992px;
+      }
+
+      /* ===== NAV ===== */
+
+      /* Icon gap: 12px (center-to-center 40px = 28px icon + 12px gap) */
+      .nav-icons {
+        gap: 12px;
+      }
+
+      /* Gap between icon group and Sell Now button */
+      .nav-right {
+        gap: 16px;
+      }
+
+      /* Sell Now: 86px wide at this breakpoint */
+      .nav-login-btn {
+        width: 86px;
+        padding: 0;
+      }
+
+      /* Category bar: fluid with 20px side padding */
+      .nav-cats-inner {
+        width: 100%;
+        padding: 0 20px;
+      }
+
+      /* Category dropdown: 20px side padding, equal-split layout */
+      .cat-dropdown-inner {
+        width: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
+        justify-content: flex-start; /* override space-between */
+        gap: 41px;                   /* gap between menu-cols and merch */
+      }
+
+      /* Menu cols: fill half the content area */
+      .cat-menu-cols {
+        flex: 1;
+        gap: 12px; /* tighter column gap at 992px (vs 24px at wider) */
+      }
+
+      /* Individual col: fill container instead of fixed 209px */
+      .cat-col {
+        flex: 1;
+        width: auto;
+      }
+
+      /* Merch: fill other half, show only 2 items (3rd hidden) */
+      .cat-merch {
+        flex: 1;
+        width: auto;
+      }
+      .cat-merch .cat-merch-item:nth-child(n+3) {
+        display: none;
+      }
+
+      /* Brand grid right panel: fill available space instead of fixed 922px */
+      .cat-brand-right {
+        width: auto;
+        flex: 1;
+        min-width: 0;
+      }
+
+      /* ===== CONTENT: shared .content wrapper ===== */
+
+      /* All .content containers: fluid, 20px side padding */
+      .content {
+        width: 100%;
+        padding: 0 20px;
+      }
+
+      /* ===== HERO BANNER ===== */
+
+      /* Hero section: 20px side padding provides the content margins */
+      .hero-section {
+        padding: 48px 20px 12px;
+      }
+
+      /* Hero grid: override .content's 20px padding (section handles margins) */
+      .hero-grid.content {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+      }
+
+      /* Hero text: scale down for ~250px wide cards */
+      .hero-text {
+        font-size: 20px;
+        line-height: 24px;
+        padding: 18px;
+      }
+
+      /* ===== PRODUCT GRID: 5 cards per row ===== */
+      /* 5 × 195.8px cards + 4 × 12px gaps = 1027px (20px viewport margin each side) */
+      .products-row {
+        overflow: hidden;
+      }
+      .product-card {
+        flex: 0 0 calc((100% - 4 * 12px) / 5);
+        max-width: calc((100% - 4 * 12px) / 5);
+        min-width: 0;
+      }
+
+      /* ===== SECTION INNER CONTAINERS (fixed 1390px → fluid) ===== */
+
+      .brands-inner {
+        width: 100%;
+        padding: 0 20px;
+      }
+
+      .editorial-inner {
+        width: 100%;
+        padding: 0 20px;
+      }
+
+      .style-inner {
+        width: 100%;
+        padding: 0 20px;
+      }
+
+      .look-inner {
+        width: 100%;
+        padding: 0 20px;
+      }
+
+      /* ===== GRID GAPS ===== */
+      /* Editorial: 3 × 341px + 2 × 2px gap = 1027px */
+      .editorial-grid {
+        gap: 2px;
+      }
+
+      /* Style Collections / Shop the Look: 4 × 255.25px + 3 × 2px gap = 1027px */
+      .style-grid,
+      .look-grid {
+        gap: 2px;
+      }
+
+      /* ===== FOOTER ===== */
+
+      .footer-inner {
+        width: 100%;
+        padding: 64px 20px 48px;
+      }
+
+      /* Narrower columns so the download section (tagline + app btns) has room */
+      .footer-col {
+        width: 200px;
+      }
+    }
+  </style>
+  <style>
+    /* ---- Nav-only preview: hide all non-nav content ---- */
+    .hero-section,
+    .top-picks-section,
+    .brands-section,
+    .editorial-section,
+    .style-section,
+    .shop-price-section,
+    .look-section,
+    footer {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ==================== NAVIGATION ==================== -->
+<nav class="nav">
+  <div class="nav-top">
+    <div class="nav-top-inner">
+      <!-- Logo -->
+      <div class="nav-logo">
+        <img src="https://www.figma.com/api/mcp/asset/f86e757c-44d4-4c6c-b832-755d776bf131" alt="Poshmark">
+      </div>
+
+      <!-- Search bar: absolutely centered within 1390px -->
+      <div class="nav-search" id="navSearch">
+        <!-- Listings type selector -->
+        <div class="nav-search-left" id="searchTypeToggle">
+          <span class="nav-search-label" id="searchTypeLabel">Listings</span>
+          <img class="nav-search-chevron" src="https://www.figma.com/api/mcp/asset/251f1566-f53d-4ea2-806c-b1748cf3069d" alt="">
+        </div>
+        <!-- Listings type dropdown -->
+        <div class="search-type-dropdown" id="searchTypeDropdown">
+          <div class="search-type-item active" data-value="Listings">Listings</div>
+          <div class="search-type-item" data-value="Closets">Closets</div>
+          <div class="search-type-item" data-value="People">People</div>
+          <div class="search-type-item" data-value="Brands">Brands</div>
+        </div>
+        <div class="nav-search-sep"></div>
+        <!-- Real input -->
+        <input class="nav-search-input" type="text" id="searchInput" placeholder="What are you looking for?" autocomplete="off">
+        <!-- Right icons: clear + search -->
+        <div class="nav-search-actions">
+          <button class="nav-search-clear" id="searchClear" aria-label="Clear search">
+            <img class="nav-search-clear-outer" id="searchClearOuter" src="https://www.figma.com/api/mcp/asset/67bcf834-1a3a-4c0e-9904-6b48dd9f0cd9" alt="">
+            <img class="nav-search-clear-inner" id="searchClearInner" src="https://www.figma.com/api/mcp/asset/051ab818-065c-47c6-9f64-111b25baa3a9" alt="">
+          </button>
+          <div class="nav-search-icon">
+            <img id="searchIconImg" src="https://www.figma.com/api/mcp/asset/3909a973-444b-4bf4-8753-45d3954a1c46" alt="search">
+          </div>
+        </div>
+      </div>
+
+      <!-- Right (logged-in) -->
+      <div class="nav-right">
+        <div class="nav-icons">
+          <button class="nav-icon-btn nav-icon-bundle" aria-label="My Bundles">
+            <img src="https://www.figma.com/api/mcp/asset/d072bd5a-55a8-4226-9041-4a509d820890" alt="">
+          </button>
+          <button class="nav-icon-btn nav-icon-like" aria-label="Likes">
+            <img src="https://www.figma.com/api/mcp/asset/41388492-d7d6-4547-8557-386a73754309" alt="">
+          </button>
+          <button class="nav-icon-btn nav-icon-news" aria-label="News">
+            <img src="https://www.figma.com/api/mcp/asset/0e722060-61da-4bda-9292-71bb7965923b" alt="">
+          </button>
+          <button class="nav-icon-btn nav-icon-me" id="navMeBtn" aria-label="My Profile">
+            <img src="https://www.figma.com/api/mcp/asset/f5cba201-f95e-4cb2-a6bf-a9ab47edf591" alt="">
+          </button>
+        </div>
+        <button class="nav-login-btn">Sell Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category bar -->
+  <div class="nav-cats" id="navCats">
+    <div class="nav-cats-inner">
+      <span class="nav-cat" data-cat="Women">Women</span>
+      <span class="nav-cat" data-cat="Men">Men</span>
+      <span class="nav-cat" data-cat="Kids">Kids</span>
+      <span class="nav-cat" data-cat="Home">Home</span>
+      <span class="nav-cat" data-cat="Pets">Pets</span>
+      <span class="nav-cat" data-cat="Electronics">Electronics</span>
+      <span class="nav-cat" data-cat="Luxury">Luxury</span>
+      <span class="nav-cat" data-cat="Beauty">Beauty</span>
+      <span class="nav-cat" data-cat="Plus">Plus</span>
+      <span class="nav-cat" data-cat="Petite">Petite</span>
+      <span class="nav-cat" data-cat="Trending">Trending</span>
+      <span class="nav-cat" data-cat="Brand">Brand</span>
+      <div class="nav-cat-live">
+        <img src="https://www.figma.com/api/mcp/asset/cb1e6023-94ec-4cd4-82c1-159f06b5fef3" alt="">
+        <span>Posh Live</span>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- Category dropdown: full-width, fixed below nav -->
+<div class="cat-dropdown" id="catDropdown">
+  <div class="cat-dropdown-inner" id="catDropdownInner">
+    <div class="cat-menu-cols" id="catMenuCols">
+      <div class="cat-col" id="catCol1"></div>
+      <div class="cat-col" id="catCol2"></div>
+    </div>
+    <div class="cat-merch" id="catMerch"></div>
+    <!-- Brand-specific panel -->
+    <div class="cat-brand-panel" id="catBrandPanel">
+      <div class="cat-brand-left" id="catBrandLeft"></div>
+      <div class="cat-brand-right" id="catBrandRight"></div>
+    </div>
+    <button class="cat-carousel-btn cat-carousel-prev" id="carouselPrev" aria-label="Previous">
+      <img src="https://www.figma.com/api/mcp/asset/704b3c29-fd45-4684-98be-22bbcd076372" alt="">
+    </button>
+    <button class="cat-carousel-btn cat-carousel-next" id="carouselNext" aria-label="Next">
+      <img src="https://www.figma.com/api/mcp/asset/704b3c29-fd45-4684-98be-22bbcd076372" alt="">
+    </button>
+  </div>
+</div>
+<!-- Account Menu Dropdown -->
+<div class="account-menu" id="accountMenu">
+  <!-- Header: avatar + name -->
+  <div class="account-menu-header">
+    <div class="account-menu-avatar">
+      <img src="https://www.figma.com/api/mcp/asset/df952fd6-5ac3-4747-9757-e2dd9318df20" alt="">
+    </div>
+    <div class="account-menu-name">
+      <span class="account-menu-username">@katie42</span>
+      <span class="account-menu-closet">Closet</span>
+    </div>
+  </div>
+
+  <div class="account-menu-divider"></div>
+
+  <div class="account-menu-sections">
+    <!-- My Activity -->
+    <div class="account-menu-section">
+      <div class="account-menu-section-title">My Activity</div>
+      <div class="account-menu-items">
+        <span class="account-menu-item">Likes</span>
+        <span class="account-menu-item">Offers</span>
+        <span class="account-menu-item">Purchases</span>
+        <span class="account-menu-item">Bundles</span>
+        <span class="account-menu-item">Recent Views</span>
+        <span class="account-menu-item">Following</span>
+      </div>
+    </div>
+
+    <!-- Selling -->
+    <div class="account-menu-section">
+      <div class="account-menu-section-title sm">Selling</div>
+      <div class="account-menu-items">
+        <span class="account-menu-item">Sales</span>
+        <span class="account-menu-item">Posh Live</span>
+        <span class="account-menu-item">Promoted Closet</span>
+        <span class="account-menu-item">Consignment</span>
+        <span class="account-menu-item">Seller Updates</span>
+        <span class="account-menu-item">Drafts</span>
+        <span class="account-menu-item">Campaigns</span>
+        <span class="account-menu-item">Shoppers</span>
+        <span class="account-menu-item">Closet Widget</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="account-menu-divider"></div>
+
+  <!-- Navigation items -->
+  <div class="account-menu-nav">
+    <div class="account-menu-nav-item plain"><span>Posh Parties</span></div>
+    <div class="account-menu-divider"></div>
+    <div class="account-menu-nav-item" id="navItemShopper">
+      <span>Shopper Settings</span>
+      <img class="account-menu-chevron" src="https://www.figma.com/api/mcp/asset/eab0cf9d-6d8a-4598-8078-0f0a911af156" alt="">
+    </div>
+    <div class="account-menu-divider"></div>
+    <div class="account-menu-nav-item" id="navItemAccount">
+      <span>Account Settings</span>
+      <img class="account-menu-chevron" src="https://www.figma.com/api/mcp/asset/eab0cf9d-6d8a-4598-8078-0f0a911af156" alt="">
+    </div>
+    <div class="account-menu-divider"></div>
+    <div class="account-menu-nav-item" id="navItemHelp">
+      <span>Help and Resources</span>
+      <img class="account-menu-chevron" src="https://www.figma.com/api/mcp/asset/eab0cf9d-6d8a-4598-8078-0f0a911af156" alt="">
+    </div>
+  </div>
+
+  <!-- Log Out -->
+  <button class="account-menu-logout">Log Out</button>
+</div>
+
+<!-- Shopper Settings Sub-menu -->
+<div class="account-submenu" id="submenuShopper">
+  <div class="account-submenu-item">Size</div>
+  <div class="account-submenu-item">Addresses</div>
+  <div class="account-submenu-item">Payment Methods</div>
+  <div class="account-submenu-item">Gift Cards</div>
+</div>
+
+<!-- Account Settings Sub-menu -->
+<div class="account-submenu" id="submenuAccount">
+  <div class="account-submenu-item">Sharing Settings</div>
+  <div class="account-submenu-item">Notifications</div>
+  <div class="account-submenu-item">Invite Friends</div>
+  <div class="account-submenu-item">All account settings</div>
+</div>
+
+<!-- Help and Resources Sub-menu -->
+<div class="account-submenu" id="submenuHelp">
+  <div class="account-submenu-item">Guide to Poshmark</div>
+  <div class="account-submenu-item">Poshmark Support Center</div>
+  <div class="account-submenu-item">FAQs</div>
+</div>
+
+<!-- Backdrop for closing dropdowns on outside click -->
+<div class="nav-backdrop" id="navBackdrop"></div>
+<!-- Dim layer shown behind category dropdown -->
+<div class="nav-dim" id="navDim"></div>
+
+<!-- ==================== HERO BANNER ==================== -->
+<div class="hero-section">
+  <div class="hero-grid content">
+    <div class="hero-item">
+      <img class="hero-bg" src="https://www.figma.com/api/mcp/asset/650f4a37-d9f8-4361-abfd-e1f329d0472a" alt="">
+      <div class="hero-gradient"></div>
+      <div class="hero-text">The Short of It</div>
+    </div>
+    <div class="hero-item">
+      <img class="hero-bg" src="https://www.figma.com/api/mcp/asset/6fb5c199-ea80-463c-91a8-1cc8ee3e3381" alt="">
+      <div class="hero-gradient"></div>
+      <div class="hero-text">Winter Look<br>Everyone Wants<br>This Season</div>
+    </div>
+    <div class="hero-item">
+      <img class="hero-bg" src="https://www.figma.com/api/mcp/asset/43b37e99-71e2-45d7-91ea-80665659740f" alt="">
+      <div class="hero-gradient"></div>
+      <div class="hero-text">Silver Mary Jane<br>Shoes</div>
+    </div>
+    <div class="hero-item">
+      <img class="hero-bg" src="https://www.figma.com/api/mcp/asset/8094b8ba-f5b5-499c-8037-5c941ed9bc65" alt="">
+      <div class="hero-gradient"></div>
+      <div class="hero-text">Edgy Jacket Outfit Ideas</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TOP PICKS ==================== -->
+<div class="top-picks-section">
+  <div class="content">
+    <p class="section-title">Top Picks</p>
+
+    <div class="tabs-bar">
+      <div class="tabs-items">
+        <span class="tab-item active">Trending Items</span>
+        <span class="tab-item">Just Listed</span>
+        <span class="tab-item">Spring Fashion</span>
+        <span class="tab-item">K-beauty</span>
+      </div>
+      <div class="tabs-view-all">
+        <button class="view-all-btn">View All</button>
+      </div>
+    </div>
+
+    <div class="products-rows">
+      <!-- Row 1 -->
+      <div class="products-row">
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/bbfb6500-d408-4a0b-a4b4-1e02f044480f" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Pink cashmere knit Sweater</div>
+            <div class="product-price-row"><span class="product-price">$110</span><span class="product-orig-price">$120</span><span class="product-size">US 6</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/c2ec7c1e-a0ed-42ea-a224-51315eb13c53" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Vintage Gold Necklace</div>
+            <div class="product-price-row"><span class="product-price">$45</span><span class="product-size">OS</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/4d66f12f-ff86-4631-9f35-6fb2b21f15f7" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Brown Leather Tote Bag</div>
+            <div class="product-price-row"><span class="product-price">$88</span><span class="product-orig-price">$150</span><span class="product-size">OS</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/6833ab21-7468-48da-b576-3d12adb3dc41" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Gray Zip-Up Hoodie</div>
+            <div class="product-price-row"><span class="product-price">$32</span><span class="product-size">M</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/c70fe03d-9c2e-45be-a53b-ad7ff8f5f9ac" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Hawaii Graphic Hoodie</div>
+            <div class="product-price-row"><span class="product-price">$58</span><span class="product-orig-price">$80</span><span class="product-size">L</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/6833ab21-7468-48da-b576-3d12adb3dc41" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Classic White Zip Hoodie</div>
+            <div class="product-price-row"><span class="product-price">$40</span><span class="product-size">S</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="products-row">
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/d163b46d-24af-46a3-b7eb-650e90a0aef0" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Floral Maxi Dress</div>
+            <div class="product-price-row"><span class="product-price">$55</span><span class="product-size">M</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/9fa2b178-cd74-4931-9726-abf2f844a843" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Orange Crossbody Bag</div>
+            <div class="product-price-row"><span class="product-price">$72</span><span class="product-orig-price">$120</span><span class="product-size">OS</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/5c7f45d9-8b2d-4fd1-801a-b898baf23478" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Stripe Knit Top</div>
+            <div class="product-price-row"><span class="product-price">$28</span><span class="product-size">XS</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/28283140-dc06-48f8-9ccc-48b6758c506d" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Plaid Wool Blazer</div>
+            <div class="product-price-row"><span class="product-price">$95</span><span class="product-orig-price">$180</span><span class="product-size">S</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/7f30b3b5-dfc7-4695-93d2-374ba8883f16" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Brown Corduroy Jacket</div>
+            <div class="product-price-row"><span class="product-price">$64</span><span class="product-size">M</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/5c7f45d9-8b2d-4fd1-801a-b898baf23478" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Ribbed Cardigan</div>
+            <div class="product-price-row"><span class="product-price">$35</span><span class="product-orig-price">$60</span><span class="product-size">L</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MOST LISTED BRANDS ==================== -->
+<div class="brands-section">
+  <div class="brands-inner">
+    <div>
+      <p class="section-title">Most Listed Brands</p>
+      <p class="section-subtitle">Trending brands sellers love this week</p>
+    </div>
+    <div class="brands-circles">
+      <div class="brand-circle">
+        <img class="brand-bg" src="https://www.figma.com/api/mcp/asset/2a48cde8-2dbc-495b-8a93-f5e5c3205b49" alt="CHANEL">
+        <div class="brand-dimmer"></div>
+        <img class="brand-logo" src="https://www.figma.com/api/mcp/asset/914dcf98-f98b-41e2-9098-60e45a3de50f" alt="CHANEL logo">
+      </div>
+      <div class="brand-circle">
+        <img class="brand-bg" src="https://www.figma.com/api/mcp/asset/37a313e1-bec8-46e7-9c1d-8bdf9023a477" alt="GUCCI">
+        <div class="brand-dimmer"></div>
+        <img class="brand-logo" src="https://www.figma.com/api/mcp/asset/332f977a-a3d1-4ff5-b3a3-5da5fc5e9f15" alt="GUCCI logo">
+      </div>
+      <div class="brand-circle">
+        <img class="brand-bg" src="https://www.figma.com/api/mcp/asset/03c50c9b-3dcc-40cc-a83b-e707b308b0e2" alt="Tory Burch">
+        <div class="brand-dimmer"></div>
+        <img class="brand-logo" src="https://www.figma.com/api/mcp/asset/be73597d-a25f-42c4-a233-7c471d80119d" alt="Tory Burch logo">
+      </div>
+      <div class="brand-circle">
+        <img class="brand-bg" src="https://www.figma.com/api/mcp/asset/7f01fcac-53bd-47e2-94c1-ee967e6f1894" alt="Dior">
+        <div class="brand-dimmer"></div>
+        <img class="brand-logo" src="https://www.figma.com/api/mcp/asset/55606c79-8cf5-4804-a293-a0d12bcbd0e9" alt="Dior logo">
+      </div>
+      <div class="brand-circle">
+        <img class="brand-bg" src="https://www.figma.com/api/mcp/asset/2a2d961a-363f-4238-8440-ea232d92b057" alt="Burberry">
+        <div class="brand-dimmer"></div>
+        <img class="brand-logo" src="https://www.figma.com/api/mcp/asset/60c87cad-14ed-4ced-8ca6-5a9a676c2b41" alt="Burberry logo">
+      </div>
+      <div class="brand-circle">
+        <img class="brand-bg" src="https://www.figma.com/api/mcp/asset/6fd2c427-f731-4c8a-9652-eacdd22286d2" alt="Mulberry">
+        <div class="brand-dimmer"></div>
+        <img class="brand-logo" src="https://www.figma.com/api/mcp/asset/8eb36bed-a3c5-4db5-ab93-2e08fa568dad" alt="Mulberry logo">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== EDITOR'S PICK ==================== -->
+<div class="editorial-section">
+  <div class="editorial-inner">
+    <div>
+      <p class="section-title">Editor's Pick</p>
+      <p class="section-subtitle">Handpicked favorites from our editors</p>
+    </div>
+    <div class="editorial-grid">
+      <div class="editorial-card">
+        <img src="https://www.figma.com/api/mcp/asset/09245b58-cc6f-4240-8860-b1a0b8bd5791" alt="">
+        <div class="editorial-gradient"></div>
+        <div class="editorial-text">Soft touch<br>Cremallera</div>
+      </div>
+      <div class="editorial-card">
+        <img src="https://www.figma.com/api/mcp/asset/4ff2d9da-c9f1-4efc-a616-0bf0ff1b5373" alt="">
+        <div class="editorial-gradient"></div>
+        <div class="editorial-text">Bright Color<br>Sneakers</div>
+      </div>
+      <div class="editorial-card">
+        <img src="https://www.figma.com/api/mcp/asset/b6092f05-5e23-44f0-93e4-7a619641e029" alt="">
+        <div class="editorial-gradient"></div>
+        <div class="editorial-text">Gucci<br>Tote Bags</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== STYLE COLLECTIONS ==================== -->
+<div class="style-section">
+  <div class="style-inner">
+    <div>
+      <p class="section-title">Style Collections</p>
+      <p class="section-subtitle">Shop by vibe, trend, or occasion</p>
+    </div>
+    <div class="style-grid">
+      <div class="style-card">
+        <img src="https://www.figma.com/api/mcp/asset/b801d747-2af0-4f96-b7c5-fdf8b44b94b8" alt="">
+        <div class="style-dimmer"></div>
+        <div class="style-text">
+          <div class="style-title">Nordic Minimal</div>
+          <div class="style-sub">Neutral &amp; Practical</div>
+        </div>
+      </div>
+      <div class="style-card">
+        <img src="https://www.figma.com/api/mcp/asset/e9849207-0ebf-4682-a10d-8aefabe8f386" alt="">
+        <div class="style-dimmer"></div>
+        <div class="style-text">
+          <div class="style-title">Bohemian</div>
+          <div class="style-sub">Neutral &amp; Practical</div>
+        </div>
+      </div>
+      <div class="style-card">
+        <img src="https://www.figma.com/api/mcp/asset/b085507c-867a-4bae-aeed-c674061e090e" alt="">
+        <div class="style-dimmer"></div>
+        <div class="style-text">
+          <div class="style-title">City Essential</div>
+          <div class="style-sub">Neutral &amp; Practical</div>
+        </div>
+      </div>
+      <div class="style-card">
+        <img src="https://www.figma.com/api/mcp/asset/eeab74d3-73cd-4a1a-bd78-da5423852a91" alt="">
+        <div class="style-dimmer"></div>
+        <div class="style-text">
+          <div class="style-title">Retro Casual</div>
+          <div class="style-sub">Neutral &amp; Practical</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SHOP BY PRICE ==================== -->
+<div class="shop-price-section">
+  <div class="content">
+    <p class="section-title">Shop by price</p>
+
+    <div class="tabs-bar">
+      <div class="tabs-items">
+        <span class="tab-item active">Under $10</span>
+        <span class="tab-item">Under $50</span>
+        <span class="tab-item">Under $200</span>
+      </div>
+      <div class="tabs-view-all">
+        <button class="view-all-btn">View All</button>
+      </div>
+    </div>
+
+    <div class="products-rows">
+      <div class="products-row">
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/bbfb6500-d408-4a0b-a4b4-1e02f044480f" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Floral Print Blouse</div>
+            <div class="product-price-row"><span class="product-price">$8</span><span class="product-size">S</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/6833ab21-7468-48da-b576-3d12adb3dc41" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Basic Gray Hoodie</div>
+            <div class="product-price-row"><span class="product-price">$9</span><span class="product-size">M</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/c2ec7c1e-a0ed-42ea-a224-51315eb13c53" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Chain Link Necklace</div>
+            <div class="product-price-row"><span class="product-price">$6</span><span class="product-size">OS</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/9fa2b178-cd74-4931-9726-abf2f844a843" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Mini Crossbody Bag</div>
+            <div class="product-price-row"><span class="product-price">$7</span><span class="product-size">OS</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/4d66f12f-ff86-4631-9f35-6fb2b21f15f7" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Leather Mini Bag</div>
+            <div class="product-price-row"><span class="product-price">$10</span><span class="product-size">OS</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/5c7f45d9-8b2d-4fd1-801a-b898baf23478" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Striped Cotton Tee</div>
+            <div class="product-price-row"><span class="product-price">$5</span><span class="product-size">XS</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="products-row">
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/7f30b3b5-dfc7-4695-93d2-374ba8883f16" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Denim Jacket</div>
+            <div class="product-price-row"><span class="product-price">$8</span><span class="product-size">L</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/d163b46d-24af-46a3-b7eb-650e90a0aef0" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Summer Floral Dress</div>
+            <div class="product-price-row"><span class="product-price">$9</span><span class="product-size">M</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/c70fe03d-9c2e-45be-a53b-ad7ff8f5f9ac" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Graphic Hoodie</div>
+            <div class="product-price-row"><span class="product-price">$7</span><span class="product-size">S</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/28283140-dc06-48f8-9ccc-48b6758c506d" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Plaid Blazer</div>
+            <div class="product-price-row"><span class="product-price">$10</span><span class="product-size">XS</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/bbfb6500-d408-4a0b-a4b4-1e02f044480f" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Cashmere Sweater</div>
+            <div class="product-price-row"><span class="product-price">$6</span><span class="product-size">M</span></div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/6833ab21-7468-48da-b576-3d12adb3dc41" alt="">
+            <div class="product-heart"><img src="https://www.figma.com/api/mcp/asset/d590b3d4-fc18-40db-83fd-d68d6c4cb323" alt=""></div>
+            <div class="product-badge">Free</div>
+          </div>
+          <div class="product-info">
+            <div class="product-name">Zip-Up Sweatshirt</div>
+            <div class="product-price-row"><span class="product-price">$8</span><span class="product-size">L</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SHOP THE LOOK ==================== -->
+<div class="look-section">
+  <div class="look-inner">
+    <div class="look-header">
+      <div class="look-header-left">
+        <p class="section-title">Shop the Look </p>
+        <p class="section-subtitle">Explore fashion, visually curated</p>
+      </div>
+      <button class="view-all-btn">View All</button>
+    </div>
+    <div class="look-grid">
+      <div class="look-card">
+        <img src="https://www.figma.com/api/mcp/asset/93751874-f360-44fa-b13d-844a7c1d836e" alt="">
+        <div class="look-gradient"></div>
+        <div class="look-text">Styling Uggs With This Denim Trend </div>
+      </div>
+      <div class="look-card">
+        <img src="https://www.figma.com/api/mcp/asset/eba3bd9f-c24a-478a-a23e-7932ebd7b46f" alt="">
+        <div class="look-gradient"></div>
+        <div class="look-text">Anti-Date-Night Outfit</div>
+      </div>
+      <div class="look-card">
+        <img src="https://www.figma.com/api/mcp/asset/498c27b6-4a58-4ced-ada7-d16713ddca5c" alt="">
+        <div class="look-gradient"></div>
+        <div class="look-text">Officially Replaced Loafers</div>
+      </div>
+      <div class="look-card">
+        <img src="https://www.figma.com/api/mcp/asset/43c2465e-f6b0-496f-ad9d-12a2f4b6b0d7" alt="">
+        <div class="look-gradient"></div>
+        <div class="look-text">Sharp Coats, Sculptural Trousers</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+<div class="footer-inner">
+  <div class="footer-top">
+    <!-- Tagline + app buttons -->
+    <div class="footer-download">
+      <p class="footer-tagline">Real finds, real inspiration, <em>every day</em></p>
+      <div class="footer-app-btns">
+        <div class="footer-apple">
+          <img src="https://www.figma.com/api/mcp/asset/d921e644-d8d1-4113-a3b2-c72d637cbe79" alt="App Store">
+        </div>
+        <div class="footer-google">
+          <img src="https://www.figma.com/api/mcp/asset/b94148d9-2243-4061-9aa7-52330f9c70ac" alt="Google Play">
+        </div>
+      </div>
+    </div>
+
+    <!-- Col 1: Shop Categories -->
+    <div class="footer-col">
+      <span class="footer-col-title">Shop Categories</span>
+      <span class="footer-col-link">Women</span>
+      <span class="footer-col-link">Men</span>
+      <span class="footer-col-link">Kids</span>
+      <span class="footer-col-link">Home</span>
+      <span class="footer-col-link">Electronics</span>
+      <span class="footer-col-link">Pets</span>
+      <span class="footer-col-link">Handbags</span>
+      <span class="footer-col-link">Shoes</span>
+      <span class="footer-col-link">Jewelry &amp; Accessories</span>
+      <span class="footer-col-link">Makeup</span>
+      <span class="footer-col-link">Dresses</span>
+    </div>
+
+    <!-- Col 2: Popular Brands -->
+    <div class="footer-col">
+      <span class="footer-col-title">Popular Brands</span>
+      <span class="footer-col-link">Nike</span>
+      <span class="footer-col-link">Michael Kors</span>
+      <span class="footer-col-link">Louis Vuitton</span>
+      <span class="footer-col-link">lululemon athletica</span>
+      <span class="footer-col-link">PINK Victoria's Secret</span>
+      <span class="footer-col-link">Coach</span>
+      <span class="footer-col-link">Chanel</span>
+      <span class="footer-col-link underline">See all brands</span>
+    </div>
+
+    <!-- Country / region selector -->
+    <div class="footer-country">
+      <div class="footer-country-inner">
+        <div class="footer-country-flag">
+          <img src="https://www.figma.com/api/mcp/asset/d3d90460-e17b-43f2-b55f-be814713640c" alt="US Flag">
+        </div>
+        <span class="footer-country-text">United States</span>
+      </div>
+      <img class="footer-country-arrow" src="https://www.figma.com/api/mcp/asset/24749de0-bc1f-49c8-9826-567ac41f135e" alt="">
+    </div>
+
+    <!-- Col 3: Support -->
+    <div class="footer-col">
+      <span class="footer-col-title">Support</span>
+      <span class="footer-col-link">How it works</span>
+      <span class="footer-col-link">FAQs</span>
+      <span class="footer-col-link">Sell on Poshmark</span>
+      <span class="footer-col-link">Live Shopping</span>
+      <span class="footer-col-link">Gift Cards</span>
+      <span class="footer-col-link">Accessibility</span>
+    </div>
+  </div>
+
+  <div class="footer-divider"></div>
+
+  <div class="footer-bottom">
+    <div class="footer-bottom-links">
+      <span class="footer-copy">© 2026 Poshmark Inc.</span>
+      <span class="footer-link">About</span>
+      <span class="footer-link">Our Community</span>
+      <span class="footer-link">Blog</span>
+      <span class="footer-link">Careers</span>
+      <span class="footer-link">Press</span>
+      <span class="footer-link">Privacy</span>
+      <span class="footer-link">Terms</span>
+      <span class="footer-link">Copyright Policy</span>
+      <span class="footer-link">Contact</span>
+    </div>
+    <div class="footer-social">
+      <div class="footer-social-icon"><img src="https://www.figma.com/api/mcp/asset/a7482f6b-fbf0-409b-9334-ddaf40930f15" alt="Instagram"></div>
+      <div class="footer-social-icon"><img src="https://www.figma.com/api/mcp/asset/ffb86035-7b85-453c-a5e7-83cc15e97eae" alt="TikTok"></div>
+      <div class="footer-social-icon"><img src="https://www.figma.com/api/mcp/asset/33afc1ca-66d4-4455-929b-0f4b59632a9a" alt="Twitter"></div>
+      <div class="footer-social-icon"><img src="https://www.figma.com/api/mcp/asset/760af9b5-b7a2-496e-aa4c-e85a0be6f66f" alt="Facebook"></div>
+      <div class="footer-social-icon"><img src="https://www.figma.com/api/mcp/asset/342b0562-c2c8-419f-a036-7726d317edca" alt="YouTube"></div>
+      <div class="footer-social-icon"><img src="https://www.figma.com/api/mcp/asset/ce2ece41-9426-40f7-ab8e-a057c55ea76b" alt="Pinterest"></div>
+    </div>
+  </div>
+</div>
+</footer>
+
+<script>
+  // ---- Tab switching ----
+  document.querySelectorAll('.tabs-bar .tab-item').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var bar = btn.closest('.tabs-bar');
+      bar.querySelectorAll('.tab-item').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+    });
+  });
+
+  // ===================== NAV INTERACTIONS =====================
+  var navSearch      = document.getElementById('navSearch');
+  var searchInput    = document.getElementById('searchInput');
+  var searchClear    = document.getElementById('searchClear');
+  var searchClearOuter = document.getElementById('searchClearOuter');
+  var searchClearInner = document.getElementById('searchClearInner');
+  var searchIconImg    = document.getElementById('searchIconImg');
+  var searchTypeToggle   = document.getElementById('searchTypeToggle');
+  var searchTypeDropdown = document.getElementById('searchTypeDropdown');
+
+  // State-based asset URLs from Figma
+  var SEARCH_ICON_URLS = {
+    'default':        'https://www.figma.com/api/mcp/asset/7c0b4fe7-a105-4f1f-a58c-05d61fbc99f5',
+    'focused':        'https://www.figma.com/api/mcp/asset/fe53796d-771d-44e5-b662-72f1eb3b5248',
+    'focused-filled': 'https://www.figma.com/api/mcp/asset/dd1800de-54b5-4fc7-975d-f435adcf2547',
+    'default-filled': 'https://www.figma.com/api/mcp/asset/93caf7ab-a148-4c3b-8c8d-9380e908e4ce'
+  };
+  var CLEAR_OUTER_URLS = {
+    'focused-filled': 'https://www.figma.com/api/mcp/asset/67bcf834-1a3a-4c0e-9904-6b48dd9f0cd9',
+    'default-filled': 'https://www.figma.com/api/mcp/asset/39f850f9-7fb2-4aac-8a12-791d5638c55d'
+  };
+  var CLEAR_INNER_URLS = {
+    'focused-filled': 'https://www.figma.com/api/mcp/asset/051ab818-065c-47c6-9f64-111b25baa3a9',
+    'default-filled': 'https://www.figma.com/api/mcp/asset/26984b75-db84-4e3b-8485-ed76e946ac7e'
+  };
+
+  function updateSearchState() {
+    var isFocused = (document.activeElement === searchInput) || searchTypeOpen;
+    var hasValue  = searchInput.value.length > 0;
+    var stateKey;
+    if (isFocused && hasValue) stateKey = 'focused-filled';
+    else if (isFocused)        stateKey = 'focused';
+    else if (hasValue)         stateKey = 'default-filled';
+    else                       stateKey = 'default';
+
+    searchIconImg.src = SEARCH_ICON_URLS[stateKey];
+
+    searchClear.classList.toggle('visible', hasValue);
+    if (hasValue) {
+      var clearKey = isFocused ? 'focused-filled' : 'default-filled';
+      searchClearOuter.src = CLEAR_OUTER_URLS[clearKey];
+      searchClearInner.src = CLEAR_INNER_URLS[clearKey];
+    }
+  }
+  var searchTypeLabel    = document.getElementById('searchTypeLabel');
+  var navCats        = document.getElementById('navCats');
+  var catDropdown    = document.getElementById('catDropdown');
+  var catCol1        = document.getElementById('catCol1');
+  var catCol2        = document.getElementById('catCol2');
+  var catMerch       = document.getElementById('catMerch');
+  var catBrandPanel  = document.getElementById('catBrandPanel');
+  var catBrandLeft   = document.getElementById('catBrandLeft');
+  var catBrandRight  = document.getElementById('catBrandRight');
+  var navBackdrop    = document.getElementById('navBackdrop');
+  var navDim         = document.getElementById('navDim');
+
+  // ---- Category data (from Figma PC > Category frames) ----
+  var catData = {
+    'Women': {
+      col1: ['All Women','Accessories','Bags','Dresses','Intimates & Sleepwear','Jackets & Coats','Jeans','Jewelry','Makeup','Pants & Jumpsuits'],
+      col2: ['Shoes','Shorts','Skirts','Sweaters','Swim','Tops','Skincare','Hair','Bath & Body','Other'],
+      merch: [
+        { src: 'https://www.figma.com/api/mcp/asset/992cfc6e-3f46-489b-84e9-7c89cf07f681', title: '2016 Nostalgia' },
+        { src: 'https://www.figma.com/api/mcp/asset/46eaa40f-70e8-46fb-bac2-382fe60ea10e', title: 'Jewelry Essentials' },
+        { src: 'https://www.figma.com/api/mcp/asset/700ad259-44a7-4c5f-bba7-8119cd824741', title: 'Elements of Style' }
+      ]
+    },
+    'Men': {
+      col1: ['All Men','Accessories','Bags','Jackets & Coats','Jeans','Pants','Shirts','Shoes','Shorts','Suits & Blazers'],
+      col2: ['Sweaters','Swim','Underwear & Socks','Grooming','Other'],
+      merch: [
+        { src: 'https://www.figma.com/api/mcp/asset/cb874e1e-7542-4f2e-922f-52c68bc8a37c', title: 'Wardrobe essentials' },
+        { src: 'https://www.figma.com/api/mcp/asset/37b1a9f3-63ee-4f58-8e98-9eb8dada6280', title: 'Denim everything' },
+        { src: 'https://www.figma.com/api/mcp/asset/94516a06-23a1-45e2-94f6-01ed74519a99', title: 'Lifestyle sneakers' }
+      ]
+    },
+    'Kids': {
+      col1: ['All Kids','Accessories','Bottoms','Dresses','Jackets & Coats','Matching Sets','One Pieces','Pajamas','Shirts & Tops','Shoes'],
+      col2: ['Swim','Costumes','Bath, Skin & Hair','Toys','Other'],
+      merch: [
+        { src: 'https://www.figma.com/api/mcp/asset/ffc81796-223f-4a96-9bb8-e3e3fe4f9b48', title: 'Spring Dresses For Girls' },
+        { src: 'https://www.figma.com/api/mcp/asset/83812e68-7d88-44f5-af32-d40c4f9b6179', title: 'Coduroy Trousers' },
+        { src: 'https://www.figma.com/api/mcp/asset/55f5d196-ebcd-4525-81c5-0ab1590fcf55', title: 'Hat Collections' }
+      ]
+    },
+    'Home': {
+      col1: ['All Home','Accents','Art','Bath','Bedding','Design','Dining','Games','Holiday','Kitchen'],
+      col2: ['Office','Party Supplies','Storage & Organization','Wall Decor','Other'],
+      merch: [
+        { src: 'https://www.figma.com/api/mcp/asset/f83e7cd0-582b-460f-ad9a-ba8f9347e733', title: 'Vintage Perfume Trays' },
+        { src: 'https://www.figma.com/api/mcp/asset/2b8ccde2-6b98-412a-9bc9-7a4660bacd69', title: 'Matcha Whisk Kits' },
+        { src: 'https://www.figma.com/api/mcp/asset/405e7acc-a1e6-4326-9d87-befc79b6c880', title: 'Aromatherapy Essential' }
+      ]
+    },
+    'Pets': {
+      col1: ['All Pets','Dog','Cat','Bird','Fish','Reptile','Small Pets','Other'],
+      col2: [],
+      merch: [
+        { src: 'https://www.figma.com/api/mcp/asset/095010fd-8847-497b-9383-861c410fa32b', title: 'Toys For Pets' },
+        { src: 'https://www.figma.com/api/mcp/asset/fe0e8263-0e4b-4a19-98e8-dfd4662e54e1', title: 'Pluffy Things' },
+        { src: 'https://www.figma.com/api/mcp/asset/6d3d74cf-c1b0-44c5-8074-f1bbfc281d6f', title: 'Pet Bowls' }
+      ]
+    },
+    'Electronics': {
+      col1: ['All Electronics','Cameras, Photo & Video','Computers, Laptops & Parts','Cell Phones & Accessories','Car Audio, Video & GPS','Wearables','Tablets & Accessories','Video Games & Consoles','VR, AR & Accessories','Media'],
+      col2: ['Networking','Headphones','Portable Audio & Video','Other'],
+      merch: [
+        { src: 'https://www.figma.com/api/mcp/asset/180d4cbe-de0d-4fb7-b720-81c9488439a9', title: 'All About Apple' },
+        { src: 'https://www.figma.com/api/mcp/asset/6b3ed821-14f0-4c0c-9a45-e58a497211c7', title: 'Colorful Cases' },
+        { src: 'https://www.figma.com/api/mcp/asset/637b0985-0697-451d-9476-a6c01cca5755', title: 'New Wearable Devices' }
+      ]
+    },
+    'Luxury': {
+      col1: [{header:true,text:'Women'},'All Women\'s Luxury','Bags','Wallets','Jewelry','Accessories','Apparel','Shoes','Sunglasses & Glasses'],
+      col2: [{header:true,text:'Men'},'All Men\'s Luxury','Bags','Wallets','Jewelry','Accessories','Apparel','Shoes','Sunglasses & Glasses'],
+      merch: [
+        { src: 'https://www.figma.com/api/mcp/asset/1e6d34ee-bf66-469f-9e46-0c1a2b66fd2f', title: 'Endless Classic' },
+        { src: 'https://www.figma.com/api/mcp/asset/d7ff1734-3fc2-473a-94a8-53be823b0811', title: 'Vintage Celine' },
+        { src: 'https://www.figma.com/api/mcp/asset/2fe46a14-0d2d-4269-bde3-05d72ab418eb', title: 'Ready for Summer' }
+      ]
+    },
+    'Beauty': {
+      col1: ['All Beauty','Makeup','Skincare','Hair','Bath & Body'],
+      col2: [],
+      merch: [
+        { src: 'https://www.figma.com/api/mcp/asset/808c564f-cd76-4479-b0a1-7e4e4952362c', title: 'OFRA Eyeshadow' },
+        { src: 'https://www.figma.com/api/mcp/asset/a2c451d9-0426-4fec-af3f-da4d27aa9c41', title: 'K-Beauty Item' },
+        { src: 'https://www.figma.com/api/mcp/asset/460a32d5-1009-48fc-8cbc-61668585c1c3', title: 'Rhode Lips' }
+      ]
+    },
+    'Plus': {
+      col2Offset: true,
+      col1: [{header:true,text:'Women'},'All Women\'s Plus','Dresses','Jeans','Skirts','Tops','Intimates & Sleepwear','Jackets & Coats','Pants & Jumpsuits','Shorts'],
+      col2: ['Sweaters','Swimwear'],
+      merch: [
+        { src: 'https://www.figma.com/api/mcp/asset/edfd8ea8-5d03-4d58-8c76-f0c7610d9806', title: 'Sheer Dresses' },
+        { src: 'https://www.figma.com/api/mcp/asset/a7e32814-1b3e-44cc-9e58-2e03f97e2904', title: 'Minimal Setups' },
+        { src: 'https://www.figma.com/api/mcp/asset/949a7d65-b672-47ae-8b97-051e40fdbfb4', title: 'Essential Denims' }
+      ]
+    },
+    'Petite': {
+      col2Offset: true,
+      col1: [{header:true,text:'Women'},'All Women\'s Petite','Dresses','Jeans','Skirts','Tops','Intimates & Sleepwear','Jackets & Coats','Pants & Jumpsuits','Shorts'],
+      col2: ['Sweaters','Swimwear'],
+      merch: [
+        { src: 'https://www.figma.com/api/mcp/asset/2151f6f5-f9b9-4c16-bab6-33f574e7d777', title: 'Layered Stylings' },
+        { src: 'https://www.figma.com/api/mcp/asset/04f226bb-a18e-499a-bd91-f9b78677c9e9', title: 'Romantic Blouse' },
+        { src: 'https://www.figma.com/api/mcp/asset/62d541f6-dddb-4208-a15f-b0eb78f6a2f9', title: 'Athletic Outfits' }
+      ]
+    },
+    'Trending': {
+      full: true,
+      carousel: true,
+      col1: [],
+      col2: [],
+      pages: [
+        [
+          { src: 'https://www.figma.com/api/mcp/asset/a0bc0c9c-945e-43fe-a05b-e8525f69a5bc', title: 'Festival Season' },
+          { src: 'https://www.figma.com/api/mcp/asset/25226b5a-58ad-4dfe-b86c-9369052ebf6c', title: 'The Spring It List' },
+          { src: 'https://www.figma.com/api/mcp/asset/9f1f8198-f270-4699-952c-913bfcbdf694', title: 'Wedding Guest' }
+        ],
+        [
+          { src: 'https://www.figma.com/api/mcp/asset/c7624c7d-dd10-45ef-bd31-4fd8412a074f', title: 'White Mini Dresses' },
+          { src: 'https://www.figma.com/api/mcp/asset/535d1900-48ba-4f2b-b683-fae085d1bbab', title: 'Distressed Moto Boots' },
+          { src: 'https://www.figma.com/api/mcp/asset/8c484e87-e1d0-44f0-a322-d005228e045d', title: 'Boho Chic' }
+        ],
+        [
+          { src: 'https://www.figma.com/api/mcp/asset/a66f3834-d4b7-435e-8fc2-0964f8249063', title: 'Vacation Outfits' },
+          { src: 'https://www.figma.com/api/mcp/asset/693625ef-1f8b-4dd7-b372-3ae07d6f5564', title: 'All About Scarf' }
+        ]
+      ]
+    },
+    'Brand': {
+      brand: true,
+      recentBrands: ['Alo Yoga', 'Reformation'],
+      brandGrid: [
+        { bg: 'b6819294-ad18-40ce-bc67-491d0e3bf9f9', logoSrc: '0bd3ff3f-460a-4332-95e7-76848adf197f', logoInset: '41.62% 6.69% 41.38% 6.36%' },
+        { bg: '496caab7-a108-4b3c-82a7-dc9d7707e1f0', logoSrc: 'b6705282-b706-44b2-9f16-ff502de24c7d', logoW: 108, logoH: 24.072 },
+        { bg: 'fad2c9c7-6dae-4d54-a339-ced240387161', logoSrc: 'cf4c941e-e6a6-4632-ad5d-988cfc2e4286', logoInset: '33.7% 2.17% 33.64% 2.17%' },
+        { bg: 'cacac473-3548-4575-9703-af0ccc21c4c8', logoSrc: 'ab130113-e63c-4dfb-a2ba-b55e578a82bb' },
+        { bg: '0a9b8cda-3e71-4a4b-b50c-8150187e4e43', logoSrc: '5496db93-8874-40d7-952b-cb1f2beb0415' },
+        { bg: 'ed829c89-b543-48c4-9373-6cafaedd2acd', logoSrc: 'fd93e7a8-6430-490a-b2c9-0dc2072b8203' }
+      ]
+    }
+  };
+
+  var activeCat      = null;
+  var catIsOpen      = false;
+  var searchTypeOpen = false;
+
+  // ===================== SEARCH BAR =====================
+
+  // Click anywhere on bar → focus input
+  navSearch.addEventListener('click', function(e) {
+    if (!searchTypeToggle.contains(e.target)) {
+      searchInput.focus();
+    }
+  });
+
+  searchInput.addEventListener('focus', function() {
+    navSearch.classList.add('focused');
+    closeCatDropdown();
+    closeAccountMenu();
+    updateSearchState();
+  });
+
+  searchInput.addEventListener('blur', function() {
+    setTimeout(function() {
+      if (!searchTypeOpen && searchInput.value === '') {
+        navSearch.classList.remove('focused');
+        if (!catIsOpen) hideBackdrop();
+      }
+      updateSearchState();
+    }, 150);
+  });
+
+  searchInput.addEventListener('input', function() {
+    updateSearchState();
+  });
+
+  searchClear.addEventListener('mousedown', function(e) { e.preventDefault(); });
+  searchClear.addEventListener('click', function(e) {
+    e.stopPropagation();
+    searchInput.value = '';
+    searchInput.focus();
+    updateSearchState();
+  });
+
+  // ===================== LISTINGS TYPE DROPDOWN =====================
+
+  searchTypeToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    searchTypeOpen = !searchTypeOpen;
+    if (searchTypeOpen) {
+      searchTypeDropdown.classList.add('open');
+      navSearch.classList.add('type-open', 'focused');
+      closeCatDropdown();
+      showBackdrop();
+    } else {
+      closeSearchTypeDropdown();
+    }
+    updateSearchState();
+  });
+
+  document.querySelectorAll('.search-type-item').forEach(function(item) {
+    item.addEventListener('mousedown', function(e) { e.preventDefault(); });
+    item.addEventListener('click', function(e) {
+      e.stopPropagation();
+      document.querySelectorAll('.search-type-item').forEach(function(i) { i.classList.remove('active'); });
+      item.classList.add('active');
+      searchTypeLabel.textContent = item.dataset.value;
+      closeSearchTypeDropdown();
+      searchInput.focus();
+    });
+  });
+
+  function closeSearchTypeDropdown() {
+    searchTypeOpen = false;
+    searchTypeDropdown.classList.remove('open');
+    navSearch.classList.remove('type-open');
+    if (document.activeElement !== searchInput && searchInput.value === '') {
+      navSearch.classList.remove('focused');
+      if (!catIsOpen) hideBackdrop();
+    }
+    updateSearchState();
+  }
+
+  // ===================== CATEGORY DROPDOWN =====================
+  // Rule 1: Hover on category → bold + underline (CSS handles this)
+  // Rule 2: Click category → open/close dropdown
+  // Rule 3: While dropdown is open, hover another category → switch immediately
+
+  document.querySelectorAll('.nav-cat').forEach(function(cat) {
+    // Rule 3: hover while open → switch immediately
+    cat.addEventListener('mouseenter', function() {
+      if (catIsOpen && activeCat !== cat) {
+        openCatDropdown(cat);
+      }
+    });
+
+    // Rule 2: click → toggle
+    cat.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (catIsOpen && activeCat === cat) {
+        closeCatDropdown();
+      } else {
+        openCatDropdown(cat);
+      }
+    });
+  });
+
+  var catDropdownInner = document.getElementById('catDropdownInner');
+  var catMenuCols      = document.getElementById('catMenuCols');
+  var carouselPrev     = document.getElementById('carouselPrev');
+  var carouselNext     = document.getElementById('carouselNext');
+  var trendingPage     = 0;
+  var trendingPages    = null;
+  var trendingTrack    = null;
+
+  // DOM cache: reuse built merch nodes across tab switches
+  var catMerchCache = {};
+
+  // Preload all category images so the browser caches them upfront
+  (function() {
+    Object.keys(catData).forEach(function(key) {
+      var d = catData[key];
+      var srcs = [];
+      if (d.merch) d.merch.forEach(function(m) { srcs.push(m.src); });
+      if (d.pages) d.pages.forEach(function(pg) { pg.forEach(function(m) { srcs.push(m.src); }); });
+      srcs.forEach(function(src) { var img = new Image(); img.src = src; });
+    });
+  })();
+
+  function updateCarouselArrows(isHovering) {
+    if (!trendingPages) return;
+    var lastIdx = trendingPages.length - 1;
+    var showPrev = trendingPage > 0;
+    var showNext = trendingPage < lastIdx && (isHovering || trendingPage > 0);
+    carouselPrev.classList.toggle('visible', showPrev);
+    carouselNext.classList.toggle('visible', showNext);
+  }
+
+  catDropdown.addEventListener('mouseenter', function() {
+    if (trendingPages) updateCarouselArrows(true);
+  });
+  catDropdown.addEventListener('mouseleave', function() {
+    if (trendingPages) updateCarouselArrows(false);
+  });
+
+  function getCarouselPageWidth() {
+    return trendingTrack ? trendingTrack.parentElement.clientWidth : 1390;
+  }
+
+  carouselNext.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (!trendingPages || trendingPage >= trendingPages.length - 1) return;
+    trendingPage++;
+    trendingTrack.style.transform = 'translateX(-' + (trendingPage * getCarouselPageWidth()) + 'px)';
+    updateCarouselArrows(true);
+  });
+
+  carouselPrev.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (!trendingPages || trendingPage <= 0) return;
+    trendingPage--;
+    trendingTrack.style.transform = 'translateX(-' + (trendingPage * getCarouselPageWidth()) + 'px)';
+    updateCarouselArrows(true);
+  });
+
+  function openCatDropdown(cat) {
+    var data = catData[cat.dataset.cat];
+    if (!data) return;
+
+    closeAccountMenu();
+
+    // Reset carousel state
+    trendingPage = 0;
+    trendingPages = null;
+    trendingTrack = null;
+    carouselPrev.classList.remove('visible');
+    carouselNext.classList.remove('visible');
+
+    // Brand-specific layout
+    if (data.brand) {
+      catMenuCols.style.display = 'none';
+      catMerch.style.display = 'none';
+      catBrandPanel.classList.add('visible');
+
+      // Recent Brands (left)
+      catBrandLeft.innerHTML = '';
+      var recent = document.createElement('div');
+      recent.className = 'cat-brand-recent';
+      var rTitle = document.createElement('div');
+      rTitle.className = 'cat-brand-recent-title';
+      rTitle.textContent = 'Recent Brands';
+      recent.appendChild(rTitle);
+      (data.recentBrands || []).forEach(function(name) {
+        var item = document.createElement('div');
+        item.className = 'cat-brand-recent-item';
+        item.textContent = name;
+        recent.appendChild(item);
+      });
+      catBrandLeft.appendChild(recent);
+
+      // Brand grid + Search All Brands link (right)
+      catBrandRight.innerHTML = '';
+      var grid = document.createElement('div');
+      grid.className = 'cat-brand-grid';
+      (data.brandGrid || []).forEach(function(cell) {
+        var thumb = document.createElement('div');
+        thumb.className = 'cat-brand-thumb';
+        var bg = document.createElement('img');
+        bg.className = 'brand-bg';
+        bg.src = 'https://www.figma.com/api/mcp/asset/' + cell.bg;
+        bg.alt = '';
+        thumb.appendChild(bg);
+        var dim = document.createElement('div');
+        dim.className = 'brand-dim';
+        thumb.appendChild(dim);
+        var logoWrap = document.createElement('div');
+        logoWrap.className = 'brand-logo-wrap';
+        var logoImg = document.createElement('img');
+        logoImg.alt = '';
+        var base = 'https://www.figma.com/api/mcp/asset/';
+        if (cell.logoInset) {
+          // Inner vector content with specific inset (cells 1, 3)
+          var inner = document.createElement('div');
+          var parts = cell.logoInset.split(' ');
+          inner.style.cssText = 'position:absolute;top:' + parts[0] + ';right:' + parts[1] + ';bottom:' + parts[2] + ';left:' + parts[3];
+          logoImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block;max-width:none;';
+          logoImg.src = base + cell.logoSrc;
+          inner.appendChild(logoImg);
+          logoWrap.appendChild(inner);
+        } else if (cell.logoW) {
+          // Fixed-size centered logo (cell 2)
+          var centered = document.createElement('div');
+          centered.style.cssText = 'position:absolute;width:' + cell.logoW + 'px;height:' + cell.logoH + 'px;left:50%;top:50%;transform:translate(-50%,-50%);';
+          logoImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;';
+          logoImg.src = base + cell.logoSrc;
+          centered.appendChild(logoImg);
+          logoWrap.appendChild(centered);
+        } else {
+          // Full-frame logo export (cells 4-6)
+          logoImg.className = 'brand-logo-fill';
+          logoImg.src = base + cell.logoSrc;
+          logoWrap.appendChild(logoImg);
+        }
+        thumb.appendChild(logoWrap);
+        grid.appendChild(thumb);
+      });
+      catBrandRight.appendChild(grid);
+      var allLink = document.createElement('div');
+      allLink.className = 'cat-brand-all-link';
+      allLink.textContent = 'Search All Brands';
+      catBrandRight.appendChild(allLink);
+
+      // Open dropdown
+      document.querySelectorAll('.nav-cat').forEach(function(c) { c.classList.remove('open'); });
+      cat.classList.add('open');
+      activeCat = cat;
+      catIsOpen = true;
+      catDropdown.classList.add('open');
+      navCats.classList.add('has-open');
+      showBackdrop();
+      showDim();
+      return;
+    }
+
+    // Reset brand panel for non-brand categories
+    catMenuCols.style.display = '';
+    catMerch.style.display = '';
+    catBrandPanel.classList.remove('visible');
+
+    // Full-width merch mode (e.g. Trending)
+    if (data.full) {
+      catDropdownInner.classList.add('merch-full');
+    } else {
+      catDropdownInner.classList.remove('merch-full');
+    }
+
+    // Build columns
+    catCol1.innerHTML = '';
+    catCol2.innerHTML = '';
+    catMerch.innerHTML = '';
+
+    catCol2.style.paddingTop = data.col2Offset ? '35px' : '';
+
+    data.col1.forEach(function(item) {
+      var div = document.createElement('div');
+      if (item && typeof item === 'object' && item.header) {
+        div.className = 'cat-item cat-item-header';
+        div.textContent = item.text;
+      } else {
+        div.className = 'cat-item';
+        div.textContent = item;
+      }
+      catCol1.appendChild(div);
+    });
+
+    data.col2.forEach(function(item) {
+      var div = document.createElement('div');
+      if (item && typeof item === 'object' && item.header) {
+        div.className = 'cat-item cat-item-header';
+        div.textContent = item.text;
+      } else {
+        div.className = 'cat-item';
+        div.textContent = item;
+      }
+      catCol2.appendChild(div);
+    });
+
+    // Merch / Carousel — use cached DOM if already built
+    var catKey = cat.dataset.cat;
+    var cached = catMerchCache[catKey];
+
+    if (cached) {
+      catMerch.appendChild(cached.node);
+      if (cached.trendingTrack) {
+        trendingTrack  = cached.trendingTrack;
+        trendingPages  = cached.trendingPages;
+        trendingTrack.style.transform = '';  // reset to page 0
+      }
+    } else if (data.carousel && data.pages) {
+      var wrap = document.createElement('div');
+      wrap.className = 'cat-trending-wrap';
+
+      var track = document.createElement('div');
+      track.className = 'cat-trending-track';
+
+      data.pages.forEach(function(page) {
+        var pageEl = document.createElement('div');
+        pageEl.className = 'cat-trending-page';
+
+        page.forEach(function(item) {
+          var el = document.createElement('div');
+          el.className = 'cat-trending-item';
+
+          var thumb = document.createElement('div');
+          thumb.className = 'cat-trending-thumb';
+
+          var img = document.createElement('img');
+          img.alt = item.title;
+          img.style.opacity = '0';
+          img.style.transition = 'opacity 0.45s ease';
+          img.addEventListener('load', function() { img.style.opacity = '1'; });
+          img.src = item.src;
+          if (img.complete) {
+            requestAnimationFrame(function() {
+              requestAnimationFrame(function() { img.style.opacity = '1'; });
+            });
+          }
+          thumb.appendChild(img);
+
+          var title = document.createElement('div');
+          title.className = 'cat-trending-title';
+          title.textContent = item.title;
+
+          el.appendChild(thumb);
+          el.appendChild(title);
+          pageEl.appendChild(el);
+        });
+
+        track.appendChild(pageEl);
+      });
+
+      wrap.appendChild(track);
+      catMerch.appendChild(wrap);
+      catMerchCache[catKey] = { node: wrap, trendingTrack: track, trendingPages: data.pages };
+      trendingTrack = track;
+      trendingPages = data.pages;
+    } else {
+      // Wrap items in display:contents so they participate in catMerch's flex layout
+      var container = document.createElement('div');
+      container.style.display = 'contents';
+
+      (data.merch || []).forEach(function(item) {
+        var el = document.createElement('div');
+        el.className = 'cat-merch-item';
+
+        var thumb = document.createElement('div');
+        thumb.className = 'cat-merch-thumb';
+
+        var img = document.createElement('img');
+        img.alt = item.title;
+        img.style.opacity = '0';
+        img.style.transition = 'opacity 0.45s ease';
+        img.addEventListener('load', function() { img.style.opacity = '1'; });
+        img.src = item.src;
+        if (img.complete) {
+          requestAnimationFrame(function() {
+            requestAnimationFrame(function() { img.style.opacity = '1'; });
+          });
+        }
+
+        thumb.appendChild(img);
+
+        var title = document.createElement('div');
+        title.className = 'cat-merch-title';
+        title.textContent = item.title;
+
+        el.appendChild(thumb);
+        el.appendChild(title);
+        container.appendChild(el);
+      });
+
+      catMerch.appendChild(container);
+      catMerchCache[catKey] = { node: container };
+    }
+
+    // Mark active
+    document.querySelectorAll('.nav-cat').forEach(function(c) { c.classList.remove('open'); });
+    cat.classList.add('open');
+    activeCat = cat;
+    catIsOpen = true;
+    catDropdown.classList.add('open');
+    navCats.classList.add('has-open');
+    showBackdrop();
+    showDim();
+  }
+
+  function closeCatDropdown() {
+    catDropdown.classList.remove('open');
+    document.querySelectorAll('.nav-cat').forEach(function(c) { c.classList.remove('open'); });
+    activeCat = null;
+    catIsOpen = false;
+    navCats.classList.remove('has-open');
+    hideDim();
+    if (!searchTypeOpen && document.activeElement !== searchInput) hideBackdrop();
+    // Reset carousel state
+    trendingPage = 0;
+    trendingPages = null;
+    trendingTrack = null;
+    carouselPrev.classList.remove('visible');
+    carouselNext.classList.remove('visible');
+    // Reset brand panel
+    catBrandPanel.classList.remove('visible');
+    catMenuCols.style.display = '';
+    catMerch.style.display = '';
+  }
+
+  // ===================== BACKDROP / ESC =====================
+
+  function showBackdrop() { navBackdrop.classList.add('visible'); }
+  function hideBackdrop()  { navBackdrop.classList.remove('visible'); }
+  function showDim()  { navDim.classList.add('visible'); }
+  function hideDim()  { navDim.classList.remove('visible'); }
+
+  // ===================== ACCOUNT MENU =====================
+  var navMeBtn    = document.getElementById('navMeBtn');
+  var accountMenu = document.getElementById('accountMenu');
+  var accountMenuOpen = false;
+
+  function openAccountMenu() {
+    // Position: horizontally centered on the Me icon button
+    var meBtnRect = navMeBtn.getBoundingClientRect();
+    var meCenterX = meBtnRect.left + meBtnRect.width / 2;
+    accountMenu.style.left  = '';
+    accountMenu.style.right = '';
+    accountMenu.classList.add('open');
+    var menuWidth = accountMenu.offsetWidth;
+    var left = meCenterX - menuWidth / 2;
+    left = Math.max(8, Math.min(left, window.innerWidth - menuWidth - 8));
+    accountMenu.style.left = left + 'px';
+    navMeBtn.classList.add('active');
+    accountMenuOpen = true;
+    showBackdrop();
+  }
+
+  function closeAccountMenu() {
+    accountMenu.classList.remove('open');
+    navMeBtn.classList.remove('active');
+    accountMenuOpen = false;
+    if (!searchTypeOpen && document.activeElement !== searchInput) hideBackdrop();
+  }
+
+  navMeBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (accountMenuOpen) {
+      closeAccountMenu();
+    } else {
+      closeCatDropdown();
+      closeSearchTypeDropdown();
+      openAccountMenu();
+    }
+  });
+
+  // ===================== ACCOUNT SUB-MENUS =====================
+  var submenus = {
+    navItemShopper: document.getElementById('submenuShopper'),
+    navItemAccount: document.getElementById('submenuAccount'),
+    navItemHelp:    document.getElementById('submenuHelp')
+  };
+  var activeSubmenu = null;
+  var submenuHideTimer = null;
+
+  function openSubmenu(triggerId) {
+    closeAllSubmenus();
+    var trigger = document.getElementById(triggerId);
+    var submenu = submenus[triggerId];
+    if (!trigger || !submenu) return;
+
+    var triggerRect  = trigger.getBoundingClientRect();
+    var menuRect     = accountMenu.getBoundingClientRect();
+    var triggerMidY  = triggerRect.top + triggerRect.height / 2;
+
+    // Open first to measure actual height, then center-align vertically
+    submenu.style.left = (menuRect.right + 8) + 'px';
+    submenu.style.top  = triggerRect.top + 'px';
+    submenu.classList.add('open');
+
+    var submenuHeight = submenu.offsetHeight;
+    submenu.style.top = (triggerMidY - submenuHeight / 2) + 'px';
+
+    activeSubmenu = submenu;
+  }
+
+  function closeAllSubmenus() {
+    Object.values(submenus).forEach(function(sm) { sm.classList.remove('open'); });
+    activeSubmenu = null;
+  }
+
+  ['navItemShopper', 'navItemAccount', 'navItemHelp'].forEach(function(id) {
+    var trigger = document.getElementById(id);
+    var submenu = submenus[id];
+
+    trigger.addEventListener('mouseenter', function() {
+      clearTimeout(submenuHideTimer);
+      openSubmenu(id);
+    });
+
+    trigger.addEventListener('mouseleave', function(e) {
+      // Delay hide so mouse can travel to sub-menu panel
+      submenuHideTimer = setTimeout(function() {
+        if (activeSubmenu === submenu) closeAllSubmenus();
+      }, 120);
+    });
+
+    submenu.addEventListener('mouseenter', function() {
+      clearTimeout(submenuHideTimer);
+    });
+
+    submenu.addEventListener('mouseleave', function() {
+      submenuHideTimer = setTimeout(function() {
+        closeAllSubmenus();
+      }, 120);
+    });
+  });
+
+  // Close sub-menus when account menu itself closes
+  var _origCloseAccountMenu = closeAccountMenu;
+  closeAccountMenu = function() {
+    closeAllSubmenus();
+    _origCloseAccountMenu();
+  };
+
+  navBackdrop.addEventListener('click', function() { closeAll(); });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeAll();
+  });
+
+  function closeAll() {
+    closeCatDropdown();
+    closeSearchTypeDropdown();
+    closeAccountMenu();
+    if (searchInput.value === '') navSearch.classList.remove('focused');
+    hideBackdrop();
+    hideDim();
+    searchInput.blur();
+  }
+</script>
+</body>
+</html>

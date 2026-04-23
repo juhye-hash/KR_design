@@ -1,0 +1,25 @@
+# 기본: 모든 파일 무시 (홈 디렉토리 보호)
+*
+.*
+
+# 예외: 이 파일 자체
+!.gitignore
+
+# 예외: Poshmark 프로토타입 HTML
+!poshmark-desktop-prototype.html
+!poshmark-mobile-nav.html
+!poshmark-nav-preview.html
+!poshmark-nav-prototype.html
+
+# 예외: 웹폰트 CSS (폰트 참조 정의)
+!Claude/
+!Claude/Webfont/
+!Claude/Webfont/Graphik/
+!Claude/Webfont/Graphik/fonts.css
+!Claude/Webfont/Nantes/
+!Claude/Webfont/Nantes/StandardVersion/
+
+# 폰트 바이너리 제외 (Commercial Type 상업 라이선스)
+# 팀원 각자 라이선스 보유 후 로컬에 배치 필요
+*.woff2
+*.woff
