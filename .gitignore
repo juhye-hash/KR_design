@@ -9,6 +9,10 @@
 !poshmark-desktop-full.html
 !poshmark-desktop-nav.html
 
+# 예외: 로컬 SVG 에셋 (아이콘, 로고)
+!assets/
+!assets/*.svg
+
 # 예외: 웹폰트 CSS (폰트 참조 정의)
 !Claude/
 !Claude/Webfont/
